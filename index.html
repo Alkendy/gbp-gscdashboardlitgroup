@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#faf9f6">
+  <title>LIT Group · Digital Performance</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📍</text></svg>">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div id="dash-root">
+<div class="gb">
+  <header class="gb-hero" id="overview">
+    <h1>LIT Group · Digital Performance</h1>
+    <div class="gb-credit">Developed by DDigital</div>
+    <div class="gb-credit" id="data-updated"></div>
+    <p>Pilih laporan: performa cabang di Google Maps atau performa website di Google Search.</p>
+  </header>
+
+  <nav class="gb-entry" id="entry" aria-label="Pilih dashboard">
+    <button type="button" data-page="gbp" id="tab-gbp"><span class="gb-en">Google Business Profile</span><span class="gb-ed">Cabang · traffic · rating · review</span></button>
+    <button type="button" data-page="gsc" id="tab-gsc"><span class="gb-en">Google Search Console</span><span class="gb-ed">Website · klik · keyword · audit</span></button>
+  </nav>
+
+  <!-- ================= GBP ================= -->
+  <section class="gb-page" id="gbp">
+    <p class="gb-takeaway" id="takeaway">
+      <span class="tk-period"></span><span class="tk-scope"></span>
+      <span class="gb-strong dash-skeleton" data-source="perf" data-field="traffic" id="tk-traffic">—</span> kunjungan profil Google
+      (<span class="gb-strong" data-source="perf" data-field="traffic_chg" id="tk-chg">—</span><span class="tk-prev"></span>),
+      rating <span class="gb-strong" data-source="perf" data-field="rating" id="tk-rating">—</span><span class="tk-topwrap">. Traffic tertinggi:
+      <span class="gb-strong" data-source="perf" data-field="label" id="tk-top">—</span></span>.
+    </p>
+
+    <div class="gb-controls" id="filters">
+      <div class="gb-seg" id="f-brand" role="group" aria-label="Brand">
+        <button type="button" data-v="Semua">Semua</button>
+        <button type="button" data-v="Ever">Ever</button>
+        <button type="button" data-v="Everbody">Everbody</button>
+        <button type="button" data-v="Ruhee">Ruhee</button>
+        <button type="button" data-v="Lavere">Lavere</button>
+      </div>
+      <select class="gb-select" id="f-branch" aria-label="Cabang" data-source="branches"></select>
+      <div class="gb-seg" id="f-gran" role="group" aria-label="Periode">
+        <button type="button" data-v="month">Bulanan</button>
+        <button type="button" data-v="quarter">Kuartal</button>
+        <button type="button" data-v="year">Tahunan</button>
+        <button type="button" data-v="all">Semua</button>
+      </div>
+      <select class="gb-select" id="f-period" aria-label="Pilih periode" data-source="perf"></select>
+    </div>
+
+    <section class="gb-card gb-branchbar" id="branch-info" hidden>
+      <div>
+        <div class="gb-bname" id="bi-name" data-source="branches" data-field="label">—</div>
+        <div class="gb-bmeta"><span id="bi-city" data-source="branches" data-field="city">—</span> · <span id="bi-brand" data-source="branches" data-field="brand">—</span> · <button type="button" class="gb-clear" id="bi-clear">Semua cabang</button></div>
+      </div>
+      <a class="gb-link" id="bi-link" target="_blank" rel="noopener noreferrer" href="#">Kunjungi Google Business ↗</a>
+    </section>
+
+    <section class="gb-kpis" id="kpis">
+      <div class="gb-card gb-kpi" id="kpi-traffic"><div class="gb-lbl">Traffic profil<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah kunjungan ke profil Google Business (Google Maps) dari sheet Monitoring GMB. Kuartal, tahun dan Semua = jumlah angka bulanan. Gabungan cabang = jumlah semua cabang. Perubahan % = (periode ini − periode sebelumnya) ÷ periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="traffic">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="perf" data-field="traffic_chg">—</span><span class="gb-vs"></span></div></div>
+      <div class="gb-card gb-kpi" id="kpi-directions"><div class="gb-lbl">Directions (rute)<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah klik tombol Rute/Directions di profil Google. Dijumlahkan per periode dan antar cabang. Perubahan % dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="directions">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="perf" data-field="directions_chg">—</span><span class="gb-vs"></span></div></div>
+      <div class="gb-card gb-kpi" id="kpi-calls"><div class="gb-lbl">Call<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah klik tombol telepon di profil Google. Dijumlahkan per periode dan antar cabang. Perubahan % dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="calls">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="perf" data-field="calls_chg">—</span><span class="gb-vs"></span></div></div>
+      <div class="gb-card gb-kpi" id="kpi-chats"><div class="gb-lbl">Chat WhatsApp<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah chat WhatsApp yang dimulai dari profil Google. Dijumlahkan per periode dan antar cabang. Perubahan % dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="chats">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="perf" data-field="chats_chg">—</span><span class="gb-vs"></span></div></div>
+      <div class="gb-card gb-kpi" id="kpi-reviews"><div class="gb-lbl">Review baru<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Total review akhir bulan dikurangi total review bulan sebelumnya, lalu dijumlahkan dalam periode. Total = jumlah review di Google pada bulan terakhir periode (dijumlah antar cabang).">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="reviews_new">—</div><div class="gb-deltaline">Total <span data-source="perf" data-field="reviews_total">—</span></div></div>
+      <div class="gb-card gb-kpi" id="kpi-rating"><div class="gb-lbl">Rating Google<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Rating Google pada bulan terakhir di periode. Untuk gabungan cabang = rata-rata rating semua cabang. Perubahan ditampilkan dalam poin rating (mis. +0,1), bukan persen.">!</button></div><div class="gb-val dash-skeleton" data-source="perf" data-field="rating">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="perf" data-field="rating_chg">—</span><span class="gb-vs"></span></div></div>
+    </section>
+
+    <div class="gb-grid">
+      <section class="gb-card" id="trend">
+        <h2>Tren performa<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Nilai metrik per periode untuk pilihan brand/cabang. Metrik aktivitas dijumlahkan dari angka bulanan; rating memakai nilai bulan terakhir di periode.">!</button></h2>
+        <p class="gb-sub" id="trend-sub">Klik batang untuk memilih periode.</p>
+        <div class="gb-tabs" id="trend-tabs" role="group" aria-label="Metrik">
+          <button type="button" data-v="traffic">Traffic</button><button type="button" data-v="directions">Directions</button><button type="button" data-v="calls">Call</button><button type="button" data-v="chats">Chat WA</button><button type="button" data-v="web">Website</button><button type="button" data-v="reviews_new">Review baru</button><button type="button" data-v="rating">Rating</button><button type="button" data-v="redeem">Redeem</button>
+        </div>
+        <div class="gb-chart" id="trend-chart" data-source="perf"></div>
+      </section>
+      <section class="gb-card" id="ranking">
+        <h2 id="rank-title">Peringkat cabang</h2>
+        <p class="gb-sub" id="rank-sub">Klik cabang untuk melihat performanya.</p>
+        <div class="gb-chart" id="rank-chart" data-source="perf"></div>
+      </section>
+    </div>
+
+    <section class="gb-card" id="reviews">
+      <div class="gb-cardhead">
+        <div><h2>Review Google: positif vs negatif</h2><p class="gb-sub">Dari sheet Review G-Business, dicatat per minggu. Klik batang untuk memilih periode.</p></div>
+        <div class="gb-seg" id="f-rgran" role="group" aria-label="Periode review">
+          <button type="button" data-v="week">Mingguan</button><button type="button" data-v="month">Bulanan</button><button type="button" data-v="quarter">Kuartal</button><button type="button" data-v="year">Tahunan</button>
+        </div>
+      </div>
+      <div class="gb-revsum">
+        <div><div class="gb-lbl" id="rv-period">Periode</div><div class="gb-val" data-source="rev" data-field="total" id="rv-total">—</div><div class="gb-lbl">review tercatat<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah review (positif + negatif) yang dicatat tim di sheet Review G-Business pada periode terpilih. Diisi per minggu, lalu dijumlahkan untuk bulan, kuartal dan tahun.">!</button></div></div>
+        <div><div class="gb-lbl">Positif<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah review positif yang dicatat per minggu di sheet Review G-Business, dijumlahkan dalam periode.">!</button></div><div class="gb-val gb-up" data-source="rev" data-field="positive" id="rv-pos">—</div></div>
+        <div><div class="gb-lbl">Negatif<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah review negatif yang dicatat per minggu di sheet Review G-Business, dijumlahkan dalam periode.">!</button></div><div class="gb-val gb-down" data-source="rev" data-field="negative" id="rv-neg">—</div></div>
+        <div><div class="gb-lbl">% positif<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Positif ÷ (positif + negatif) × 100%.">!</button></div><div class="gb-val" data-source="rev" data-field="positive_share" id="rv-share">—</div></div>
+      </div>
+      <div class="gb-legend"><span><span class="gb-sw" id="sw-pos"></span>Positif</span><span><span class="gb-sw" id="sw-neg"></span>Negatif</span></div>
+      <div class="gb-chart" id="rev-chart" data-source="rev"></div>
+    </section>
+
+    <section class="gb-card" id="branches">
+      <div class="gb-cardhead">
+        <div><h2>Semua cabang</h2><p class="gb-sub" id="tbl-sub">Klik baris untuk melihat cabang; "Google ↗" membuka profil cabang.</p></div>
+        <input class="gb-search" id="tbl-search" type="search" placeholder="Cari cabang…" aria-label="Cari cabang">
+      </div>
+      <div class="gb-tablewrap">
+        <table class="gb-table" id="tbl" data-source="perf" data-row-key="scope,gran,period">
+          <thead><tr>
+            <th data-field="label" class="gb-l"><button type="button" data-sort="label">Cabang</button></th>
+            <th data-field="brand" class="gb-l gb-hide-narrow"><button type="button" data-sort="brand">Brand</button></th>
+            <th data-field="rating"><button type="button" data-sort="rating">Rating</button></th>
+            <th data-field="reviews_total" class="gb-hide-narrow"><button type="button" data-sort="reviews_total">Total review</button></th>
+            <th data-field="reviews_new"><button type="button" data-sort="reviews_new">Review baru</button></th>
+            <th data-field="traffic"><button type="button" data-sort="traffic">Traffic</button></th>
+            <th data-field="directions"><button type="button" data-sort="directions">Directions</button></th>
+            <th data-field="calls" class="gb-hide-narrow"><button type="button" data-sort="calls">Call</button></th>
+            <th data-field="chats" class="gb-hide-narrow"><button type="button" data-sort="chats">Chat WA</button></th>
+            <th data-field="web" class="gb-hide-narrow"><button type="button" data-sort="web">Website</button></th>
+            <th class="gb-plain">Google</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="gb-card" id="gbp-monthly">
+      <h2>Rekap semua bulan</h2>
+      <p class="gb-sub" id="gm-sub">Semua bulan untuk pilihan di atas, terbaru di atas.</p>
+      <div class="gb-tablewrap">
+        <table class="gb-table" id="gm-tbl" data-source="perf" data-row-key="scope,gran,period">
+          <thead><tr>
+            <th class="gb-l gb-plain" data-field="period">Bulan</th>
+            <th class="gb-plain" data-field="traffic">Traffic</th>
+            <th class="gb-plain" data-field="directions">Directions</th>
+            <th class="gb-plain" data-field="calls">Call</th>
+            <th class="gb-plain" data-field="chats">Chat WA</th>
+            <th class="gb-plain gb-hide-narrow" data-field="web">Website</th>
+            <th class="gb-plain" data-field="reviews_new">Review baru</th>
+            <th class="gb-plain gb-hide-narrow" data-field="reviews_total">Total review</th>
+            <th class="gb-plain" data-field="rating">Rating</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="gb-foot">Traffic = kunjungan profil Google Maps. Review baru = selisih total review akhir bulan dengan bulan sebelumnya. Metrik aktivitas dijumlahkan per periode; rating memakai nilai terakhir (rata-rata antar cabang untuk gabungan). Data monitoring mulai Sep 2025. Diambil langsung dari Google Drive setiap dashboard dibuka atau di-refresh.</p>
+  </section>
+
+  <!-- ================= GSC ================= -->
+  <section class="gb-page" id="gsc" hidden></section>
+</div>
+
+<template id="tpl-gsc">
+  <p class="gb-takeaway" id="gsc-takeaway">
+    <span class="gk-period"></span><span class="gk-scope"></span>
+    <span class="gb-strong dash-skeleton" data-source="gsc_perf" data-field="clicks" id="gk-clicks">—</span> klik dari Google Search
+    (<span class="gb-strong" data-source="gsc_perf" data-field="clicks_chg" id="gk-chg">—</span><span class="gk-prev"></span>),
+    posisi rata-rata <span class="gb-strong" data-source="gsc_perf" data-field="position" id="gk-pos">—</span>.
+  </p>
+
+  <div class="gb-controls" id="gsc-filters">
+    <div class="gb-seg" id="g-brand" role="group" aria-label="Brand website">
+      <button type="button" data-v="Semua">Semua</button>
+      <button type="button" data-v="Ever">Ever</button>
+      <button type="button" data-v="Ruhee">Ruhee</button>
+      <button type="button" data-v="Lavere">Lavere</button>
+      <button type="button" data-v="Ruheediary">Ruheediary</button>
+    </div>
+    <div class="gb-seg" id="g-gran" role="group" aria-label="Periode">
+      <button type="button" data-v="month">Bulanan</button>
+      <button type="button" data-v="quarter">Kuartal</button>
+      <button type="button" data-v="year">Tahunan</button>
+      <button type="button" data-v="all">Semua</button>
+    </div>
+    <select class="gb-select" id="g-period" aria-label="Pilih periode" data-source="gsc_perf"></select>
+  </div>
+
+  <section class="gb-kpis" id="gsc-kpis">
+    <div class="gb-card gb-kpi" id="gkpi-clicks"><div class="gb-lbl">Klik<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Jumlah klik dari hasil pencarian Google ke website, dijumlahkan dari data harian (sheet Chart/Dates) di export Search Console. Perubahan % dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="gsc_perf" data-field="clicks">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="gsc_perf" data-field="clicks_chg">—</span><span class="gb-vs"></span></div></div>
+    <div class="gb-card gb-kpi" id="gkpi-impr"><div class="gb-lbl">Impresi<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Berapa kali halaman website tampil di hasil pencarian Google, dijumlahkan dari data harian. Perubahan % dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="gsc_perf" data-field="impressions">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="gsc_perf" data-field="impressions_chg">—</span><span class="gb-vs"></span></div></div>
+    <div class="gb-card gb-kpi" id="gkpi-ctr"><div class="gb-lbl">CTR<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Click-through rate = klik ÷ impresi untuk periode yang dipilih. Perubahan = persen naik/turunnya CTR dibanding periode sebelumnya.">!</button></div><div class="gb-val dash-skeleton" data-source="gsc_perf" data-field="ctr">—</div><div class="gb-deltaline"><span class="gb-delta" data-source="gsc_perf" data-field="ctr_chg">—</span><span class="gb-vs"></span></div></div>
+    <div class="gb-card gb-kpi" id="gkpi-pos"><div class="gb-lbl">Posisi rata-rata<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Rata-rata peringkat di Google, tertimbang impresi: Σ(posisi harian × impresi harian) ÷ Σ impresi. Angka lebih kecil lebih baik; perubahan negatif (hijau) berarti peringkat membaik.">!</button></div><div class="gb-val dash-skeleton" data-source="gsc_perf" data-field="position">—</div><div class="gb-deltaline"><span class="gb-delta gb-inv" data-source="gsc_perf" data-field="position_chg">—</span><span class="gb-vs"></span></div></div>
+  </section>
+
+  <div class="gb-grid">
+    <section class="gb-card" id="gsc-trend">
+      <h2>Tren website<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Klik, impresi, CTR dan posisi per bulan/kuartal/tahun dihitung dari data harian semua export. Untuk Posisi, sumbu dibalik: garis lebih tinggi = peringkat lebih baik.">!</button></h2>
+      <p class="gb-sub" id="gt-sub">Klik batang untuk memilih periode.</p>
+      <div class="gb-tabs" id="gt-tabs" role="group" aria-label="Metrik">
+        <button type="button" data-v="clicks">Klik</button><button type="button" data-v="impressions">Impresi</button><button type="button" data-v="ctr">CTR</button><button type="button" data-v="position">Posisi</button>
+      </div>
+      <div class="gb-chart" id="gt-chart" data-source="gsc_perf"></div>
+    </section>
+    <section class="gb-card" id="gsc-brands">
+      <h2 id="gb-title">Perbandingan brand</h2>
+      <p class="gb-sub" id="gb-sub">Klik brand untuk melihat detailnya.</p>
+      <div class="gb-chart" id="gb-chart" data-source="gsc_perf"></div>
+    </section>
+  </div>
+
+  <section class="gb-card" id="gsc-keywords">
+    <div class="gb-cardhead">
+      <div><h2>Top keyword<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Dari sheet Queries tiap export. Klik & impresi dijumlahkan bila periode mencakup beberapa file; CTR = klik ÷ impresi; posisi tertimbang impresi. Diurutkan dari klik terbanyak: 10 keyword per brand, 20 bila Semua brand.">!</button></h2><p class="gb-sub" id="kw-sub">Kata kunci pencarian yang mendatangkan klik ke website.</p></div>
+      <div class="gb-controls">
+        <select class="gb-select" id="kw-period" aria-label="Periode keyword" data-source="gsc_kw"></select>
+        <input class="gb-search" id="kw-search" type="search" placeholder="Cari keyword…" aria-label="Cari keyword">
+      </div>
+    </div>
+    <div class="gb-tablewrap">
+      <table class="gb-table" id="kw-tbl" data-source="gsc_kw" data-row-key="brand,period,key">
+        <thead><tr>
+          <th data-field="key" class="gb-l"><button type="button" data-sort="key">Keyword</button></th>
+          <th data-field="brand" class="gb-l gb-hide-narrow"><button type="button" data-sort="brand">Brand</button></th>
+          <th data-field="clicks"><button type="button" data-sort="clicks">Klik</button></th>
+          <th data-field="impressions"><button type="button" data-sort="impressions">Impresi</button></th>
+          <th data-field="ctr"><button type="button" data-sort="ctr">CTR</button></th>
+          <th data-field="position"><button type="button" data-sort="position">Posisi</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="gb-card" id="gsc-audit">
+    <h2>Audit SEO otomatis<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Aturan: Tren klik merah bila turun lebih dari 10% dari bulan lalu, kuning bila turun. CTR di bawah 1% kritis, di bawah 2% perlu perhatian. Peluang CTR = keyword posisi 1–5, impresi ≥100, CTR di bawah 2%. Hampir halaman 1 = posisi 8–20 & impresi ≥100. Halaman CTR rendah = impresi ≥1.000 & CTR di bawah 0,5%. Brand vs non-brand = porsi klik dari keyword yang memuat nama brand (kuning bila di atas 70%).">!</button></h2>
+    <p class="gb-sub" id="au-sub">Dihitung dari export terbaru tiap brand. Hijau = baik, kuning = perlu perhatian, merah = kritis.</p>
+    <div class="gb-tablewrap">
+      <table class="gb-table" id="au-tbl" data-source="gsc_audit" data-row-key="brand,check">
+        <thead><tr>
+          <th data-field="brand" class="gb-l gb-plain">Brand</th>
+          <th data-field="check" class="gb-l gb-plain">Pemeriksaan</th>
+          <th data-field="status" class="gb-l gb-plain">Status</th>
+          <th data-field="finding" class="gb-l gb-plain">Temuan</th>
+          <th data-field="examples" class="gb-l gb-plain gb-hide-narrow">Contoh</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="gb-card" id="gsc-pages">
+    <div class="gb-cardhead">
+      <div><h2>Top halaman<button type="button" class="gb-info" aria-label="Cara hitung" data-info="Dari sheet Pages tiap export, periode mengikuti pilihan periode keyword. Klik & impresi dijumlahkan; CTR = klik ÷ impresi; posisi tertimbang impresi. Menampilkan 5 halaman dengan klik terbanyak.">!</button></h2><p class="gb-sub">5 halaman website dengan klik terbanyak pada periode keyword yang dipilih.</p></div>
+      <input class="gb-search" id="pg-search" type="search" placeholder="Cari halaman…" aria-label="Cari halaman">
+    </div>
+    <div class="gb-tablewrap">
+      <table class="gb-table" id="pg-tbl" data-source="gsc_pages" data-row-key="brand,period,key">
+        <thead><tr>
+          <th data-field="key" class="gb-l"><button type="button" data-sort="key">Halaman</button></th>
+          <th data-field="clicks"><button type="button" data-sort="clicks">Klik</button></th>
+          <th data-field="impressions"><button type="button" data-sort="impressions">Impresi</button></th>
+          <th data-field="ctr"><button type="button" data-sort="ctr">CTR</button></th>
+          <th data-field="position"><button type="button" data-sort="position">Posisi</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="gb-card" id="gsc-monthly">
+    <h2>Rekap semua bulan</h2>
+    <p class="gb-sub" id="gsm-sub">Setiap bulan untuk brand yang dipilih, terbaru di atas.</p>
+    <div class="gb-tablewrap">
+      <table class="gb-table" id="gsm-tbl" data-source="gsc_perf" data-row-key="scope,gran,period">
+        <thead><tr>
+          <th class="gb-l gb-plain" data-field="period">Bulan</th>
+          <th class="gb-plain" data-field="clicks">Klik</th>
+          <th class="gb-plain" data-field="impressions">Impresi</th>
+          <th class="gb-plain" data-field="ctr">CTR</th>
+          <th class="gb-plain" data-field="position">Posisi</th>
+          <th class="gb-plain" data-field="clicks_chg">Klik vs bln lalu</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="gb-foot">Sumber: semua file export Google Search Console di folder Google Drive GSC. Taruh export bulanan baru (nama file diawali domain, mis. ever.co.id-Performance-on-Search-…) ke folder yang sama dan dashboard otomatis membacanya. Klik & impresi bulanan dari data harian; CTR = klik ÷ impresi; posisi = rata-rata tertimbang impresi. Keyword & halaman: 200 teratas per file export.</p>
+</template>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="assets/dash-shim.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
