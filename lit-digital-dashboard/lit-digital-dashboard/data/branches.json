@@ -1,0 +1,302 @@
+[
+ {
+  "key": "EVER|Darmawangsa",
+  "sheet": "EVER",
+  "branch": "Darmawangsa",
+  "brand": "Ever",
+  "label": "Ever House Darmawangsa",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Darmawangsa",
+  "review_match": "ever house darmawangsa"
+ },
+ {
+  "key": "EVER|Puri",
+  "sheet": "EVER",
+  "branch": "Puri",
+  "brand": "Ever",
+  "label": "Ever House Puri Indah Mall",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Puri+Indah+Mall+Two+Seasons",
+  "review_match": "ever house puri indah"
+ },
+ {
+  "key": "EVER|Menteng",
+  "sheet": "EVER",
+  "branch": "Menteng",
+  "brand": "Ever",
+  "label": "Ever House Menteng (Rumah Cokro)",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Rumah+Cokro+Menteng",
+  "review_match": "ever house rumah cokro"
+ },
+ {
+  "key": "EVER|GI",
+  "sheet": "EVER",
+  "branch": "GI",
+  "brand": "Ever",
+  "label": "Ever House Grand Indonesia",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Grand+Indonesia",
+  "review_match": "ever house grand indonesia"
+ },
+ {
+  "key": "EVER|PI",
+  "sheet": "EVER",
+  "branch": "PI",
+  "brand": "Ever",
+  "label": "Ever House Plaza Indonesia",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Plaza+Indonesia",
+  "review_match": "ever house plaza indonesia"
+ },
+ {
+  "key": "EVER|PS",
+  "sheet": "EVER",
+  "branch": "PS",
+  "brand": "Ever",
+  "label": "Ever House Plaza Senayan",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Plaza+Senayan",
+  "review_match": "ever house plaza senayan"
+ },
+ {
+  "key": "EVER|Kemang",
+  "sheet": "EVER",
+  "branch": "Kemang",
+  "brand": "Ever",
+  "label": "Ever House Kemang",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Kemang",
+  "review_match": "ever house kemang"
+ },
+ {
+  "key": "EVER|PIM 2",
+  "sheet": "EVER",
+  "branch": "PIM 2",
+  "brand": "Ever",
+  "label": "Ever House Pondok Indah Mall 2",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Pondok+Indah+Mall+2",
+  "review_match": "ever house pondok indah mall 2"
+ },
+ {
+  "key": "EVER|PIM 3",
+  "sheet": "EVER",
+  "branch": "PIM 3",
+  "brand": "Ever",
+  "label": "Ever House Pondok Indah Mall 3",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Pondok+Indah+Mall+3",
+  "review_match": "ever house pondok indah mall 3"
+ },
+ {
+  "key": "EVER|Gading",
+  "sheet": "EVER",
+  "branch": "Gading",
+  "brand": "Ever",
+  "label": "Ever House Kelapa Gading",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Summarecon+Mall+Kelapa+Gading+5",
+  "review_match": "ever house + kelapa gading"
+ },
+ {
+  "key": "EVER|Surabaya Permai",
+  "sheet": "EVER",
+  "branch": "Surabaya Permai",
+  "brand": "Ever",
+  "label": "Ever House Darmo Permai",
+  "city": "Surabaya",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Darmo+Permai+Surabaya",
+  "review_match": "ever house darmo permai"
+ },
+ {
+  "key": "EVER|Surbaya Jayanata",
+  "sheet": "EVER",
+  "branch": "Surbaya Jayanata",
+  "brand": "Ever",
+  "label": "Ever House Jayanata",
+  "city": "Surabaya",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Jayanata+Surabaya",
+  "review_match": "ever house jayanata"
+ },
+ {
+  "key": "EVER|Surabaya Tunjungan Plaza 4",
+  "sheet": "EVER",
+  "branch": "Surabaya Tunjungan Plaza 4",
+  "brand": "Ever",
+  "label": "Ever House Tunjungan Plaza",
+  "city": "Surabaya",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ever+House+Tunjungan+Plaza+Surabaya",
+  "review_match": "ever house tunjungan"
+ },
+ {
+  "key": "EVER|Everbody Darmawangsa",
+  "sheet": "EVER",
+  "branch": "Everbody Darmawangsa",
+  "brand": "Everbody",
+  "label": "Everbody Darmawangsa",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Everbody+Darmawangsa+Lymphatic+Drainage+Massage",
+  "review_match": "everbody darmawangsa"
+ },
+ {
+  "key": "EVER|Everbody Kemang",
+  "sheet": "EVER",
+  "branch": "Everbody Kemang",
+  "brand": "Everbody",
+  "label": "Everbody Kemang",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Everbody+Kemang+Lymphatic+Drainage+Massage",
+  "review_match": "everbody kemang"
+ },
+ {
+  "key": "EVER|Everbody Puri Indah Mall",
+  "sheet": "EVER",
+  "branch": "Everbody Puri Indah Mall",
+  "brand": "Everbody",
+  "label": "Everbody Puri Indah Mall",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Everbody+Puri+Indah+Mall",
+  "review_match": "everbody puri indah"
+ },
+ {
+  "key": "EVER|Everbody Pakubuwono",
+  "sheet": "EVER",
+  "branch": "Everbody Pakubuwono",
+  "brand": "Everbody",
+  "label": "Everbody Pakubuwono",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Everbody+Pakubuwono+Lymphatic+Drainage+Massage",
+  "review_match": "everbody pakubuwono"
+ },
+ {
+  "key": "EVER|Everbody Gading Serpong",
+  "sheet": "EVER",
+  "branch": "Everbody Gading Serpong",
+  "brand": "Everbody",
+  "label": "Everbody Gading Serpong",
+  "city": "Tangerang",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Everbody+Gading+Serpong+Lymphatic+Drainage+Massage",
+  "review_match": "everbody gading serpong"
+ },
+ {
+  "key": "RUHEE|Pakubuwono",
+  "sheet": "RUHEE",
+  "branch": "Pakubuwono",
+  "brand": "Ruhee",
+  "label": "Ruhee Pakubuwono",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Pakubuwono",
+  "review_match": "ruhee + pakubuwono"
+ },
+ {
+  "key": "RUHEE|Benhill",
+  "sheet": "RUHEE",
+  "branch": "Benhill",
+  "brand": "Ruhee",
+  "label": "Ruhee Benhill",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Benhill",
+  "review_match": "ruhee + benhill"
+ },
+ {
+  "key": "RUHEE|Cikarang",
+  "sheet": "RUHEE",
+  "branch": "Cikarang",
+  "brand": "Ruhee",
+  "label": "Ruhee Cikarang (AEON Deltamas)",
+  "city": "Cikarang",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+AEON+Mall+Deltamas",
+  "review_match": "ruhee + deltamas"
+ },
+ {
+  "key": "RUHEE|Gading Serpong",
+  "sheet": "RUHEE",
+  "branch": "Gading Serpong",
+  "brand": "Ruhee",
+  "label": "Ruhee Gading Serpong",
+  "city": "Tangerang",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Gading+Serpong",
+  "review_match": "ruhee + gading serpong"
+ },
+ {
+  "key": "RUHEE|PIK",
+  "sheet": "RUHEE",
+  "branch": "PIK",
+  "brand": "Ruhee",
+  "label": "Ruhee PIK",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+PIK",
+  "review_match": "ruhee + pik"
+ },
+ {
+  "key": "RUHEE|Denpasar",
+  "sheet": "RUHEE",
+  "branch": "Denpasar",
+  "brand": "Ruhee",
+  "label": "Ruhee Denpasar",
+  "city": "Bali",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Denpasar+Bali",
+  "review_match": "ruhee + denpasar"
+ },
+ {
+  "key": "RUHEE|Jimbaran",
+  "sheet": "RUHEE",
+  "branch": "Jimbaran",
+  "brand": "Ruhee",
+  "label": "Ruhee Jimbaran",
+  "city": "Bali",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+New+Melati+Jimbaran",
+  "review_match": "ruhee + jimbaran"
+ },
+ {
+  "key": "RUHEE|Botolempangan",
+  "sheet": "RUHEE",
+  "branch": "Botolempangan",
+  "brand": "Ruhee",
+  "label": "Ruhee Botolempangan",
+  "city": "Makassar",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Botolempangan+Makassar",
+  "review_match": "ruhee + botolempangan"
+ },
+ {
+  "key": "RUHEE|Panakukang",
+  "sheet": "RUHEE",
+  "branch": "Panakukang",
+  "brand": "Ruhee",
+  "label": "Ruhee Panakkukang",
+  "city": "Makassar",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Panakkukang+Makassar",
+  "review_match": "ruhee + panakkukang"
+ },
+ {
+  "key": "RUHEE|Tanjung Bunga",
+  "sheet": "RUHEE",
+  "branch": "Tanjung Bunga",
+  "brand": "Ruhee",
+  "label": "Ruhee Tanjung Bunga",
+  "city": "Makassar",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Ruhee+Eyelash+Extension+Tanjung+Bunga+Makassar",
+  "review_match": "ruhee + tanjung bunga"
+ },
+ {
+  "key": "LAVERE|Neo Soho",
+  "sheet": "LAVERE",
+  "branch": "Neo Soho",
+  "brand": "Lavere",
+  "label": "Lavere Neo Soho",
+  "city": "Jakarta",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Lavere+Neo+Soho",
+  "review_match": ""
+ },
+ {
+  "key": "LAVERE|Gading Serpong",
+  "sheet": "LAVERE",
+  "branch": "Gading Serpong",
+  "brand": "Lavere",
+  "label": "Lavere Gading Serpong",
+  "city": "Tangerang",
+  "maps_url": "https://www.google.com/maps/search/?api=1&query=Lavere+Gading+Serpong",
+  "review_match": ""
+ }
+]
