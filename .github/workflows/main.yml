@@ -31,12 +31,18 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
         run: python scripts/update_data.py
 
+      - name: Ambil data Instagram & TikTok dari Windsor.ai
+        continue-on-error: true   # bila Windsor gagal, data GBP/GSC tetap diperbarui
+        env:
+          WINDSOR_API_KEY: ${{ secrets.WINDSOR_API_KEY }}
+        run: python scripts/update_social.py
+
       - name: Simpan data baru
         run: |
           git config user.name "dashboard-bot"
           git config user.email "dashboard-bot@users.noreply.github.com"
           git add data/
-          if git diff --cached --quiet -- data/gmb_monitoring.json data/reviews.json data/gsc.json; then
+          if git diff --cached --quiet -- data/gmb_monitoring.json data/reviews.json data/gsc.json data/social_ig_daily.json data/social_ig_profile.json data/social_ig_media.json data/social_tt_daily.json data/social_tt_videos.json; then
             echo "Tidak ada perubahan data."
           else
             git commit -m "Update data dashboard $(date -u +'%Y-%m-%d %H:%M') UTC"
