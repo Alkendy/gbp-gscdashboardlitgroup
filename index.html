@@ -10,18 +10,30 @@
 </head>
 <body>
   <div id="dash-root">
-<div class="gb">
-  <header class="gb-hero" id="overview">
-    <h1>LIT Group · Digital Performance</h1>
-    <div class="gb-credit">Developed by DDigital</div>
-    <div class="gb-credit" id="data-updated"></div>
-    <p>Pilih laporan: performa cabang di Google Maps atau performa website di Google Search.</p>
-  </header>
-
+<div class="gb-shell" id="shell">
+<aside class="gb-side" id="side" aria-label="Menu dashboard">
+  <button type="button" class="gb-iconbtn gb-railbtn" id="side-rail" aria-label="Tampilkan menu" title="Tampilkan menu">☰</button>
+  <div class="gb-side-head">
+    <div><div class="gb-side-title">LIT Group</div><div class="gb-credit">Digital Performance</div></div>
+    <button type="button" class="gb-iconbtn" id="side-close" aria-label="Sembunyikan menu" title="Sembunyikan menu (tampil full)">«</button>
+  </div>
   <nav class="gb-entry" id="entry" aria-label="Pilih dashboard">
     <button type="button" data-page="gbp" id="tab-gbp"><span class="gb-en">Google Business Profile</span><span class="gb-ed">Cabang · traffic · rating · review</span></button>
     <button type="button" data-page="gsc" id="tab-gsc"><span class="gb-en">Google Search Console</span><span class="gb-ed">Website · klik · keyword · audit</span></button>
   </nav>
+  <div class="gb-side-foot gb-credit">Developed by DDigital</div>
+</aside>
+<div class="gb-scrim" id="side-scrim" hidden></div>
+<div class="gb-main">
+<div class="gb">
+  <header class="gb-hero" id="overview">
+    <div class="gb-herorow">
+      <button type="button" class="gb-iconbtn gb-menubtn" id="side-open" aria-label="Tampilkan menu" title="Tampilkan menu" aria-controls="side">☰</button>
+      <h1>LIT Group · Digital Performance</h1>
+    </div>
+    <div class="gb-credit" id="data-updated"></div>
+    <p>Pilih laporan di menu kiri: performa cabang di Google Maps atau performa website di Google Search.</p>
+  </header>
 
   <!-- ================= GBP ================= -->
   <section class="gb-page" id="gbp">
@@ -81,6 +93,7 @@
         <h2 id="rank-title">Peringkat cabang</h2>
         <p class="gb-sub" id="rank-sub">Klik cabang untuk melihat performanya.</p>
         <div class="gb-chart" id="rank-chart" data-source="perf"></div>
+        <button type="button" class="gb-more" id="rank-more" hidden aria-expanded="false"></button>
       </section>
     </div>
 
@@ -152,6 +165,8 @@
 
   <!-- ================= GSC ================= -->
   <section class="gb-page" id="gsc" hidden></section>
+</div>
+</div>
 </div>
 
 <template id="tpl-gsc">

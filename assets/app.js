@@ -525,7 +525,34 @@ $('#entry').addEventListener('click', (e) => {
   if (!b) return;
   dash.setParams({ page: b.dataset.page });
   dash.setLink(b.dataset.page);
+  if (isNarrow()) setSide(false);
 });
+
+// ---------- sidebar menu (sembunyikan / tampilkan) ----------
+const shell = $('#shell');
+const isNarrow = () => window.matchMedia('(max-width: 900px)').matches;
+const SIDE_KEY = 'lit-dash-side';
+function setSide(open, remember) {
+  if (isNarrow()) {
+    shell.classList.toggle('is-open', open);
+    $('#side-scrim').hidden = !open;
+  } else {
+    shell.classList.toggle('is-collapsed', !open);
+    if (remember) { try { localStorage.setItem(SIDE_KEY, open ? 'open' : 'closed'); } catch (e) { /* storage tidak tersedia */ } }
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 320);
+  }
+  $('#side-open').setAttribute('aria-expanded', String(open));
+}
+(() => {
+  let saved = null;
+  try { saved = localStorage.getItem(SIDE_KEY); } catch (e) { /* storage tidak tersedia */ }
+  if (!isNarrow() && saved === 'closed') shell.classList.add('is-collapsed');
+})();
+$('#side-open').addEventListener('click', () => setSide(true, true));
+$('#side-close').addEventListener('click', () => setSide(false, true));
+$('#side-rail').addEventListener('click', () => setSide(true, true));
+$('#side-scrim').addEventListener('click', () => setSide(false));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && shell.classList.contains('is-open')) setSide(false); });
 const startHash = location.hash.slice(1);
 if (startHash === 'gsc' || startHash === 'gbp') dash.setParams({ page: startHash });
 
@@ -541,6 +568,12 @@ const sorter = (state) => (a, b) => { const x = a[state.key], y = b[state.key]; 
 const ariaSort = (tbl, state) => document.querySelectorAll(tbl + ' th[data-field]').forEach((th) => th.setAttribute('aria-sort', th.dataset.field === state.key ? (state.dir > 0 ? 'ascending' : 'descending') : 'none'));
 
 // ---------- GBP controls ----------
+let rankAll = false;
+$('#rank-more').addEventListener('click', () => {
+  rankAll = !rankAll;
+  draw();
+  if (!rankAll) $('#ranking').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+});
 const gbpTbl = { key: 'traffic', dir: -1, q: '' };
 const kwState = { key: 'clicks', dir: -1, q: '' };
 const pgState = { key: 'clicks', dir: -1, q: '' };
@@ -752,7 +785,19 @@ function drawGbp() {
   const ranked = peers.filter((r) => r[metric] != null).map((r) => ({ scope: r.scope, label: r.label, value: r[metric] })).sort((a, b) => b.value - a.value);
   $('#rank-title').textContent = 'Peringkat cabang: ' + mLabel.toLowerCase();
   $('#rank-sub').textContent = (period ? fmtPeriod(period) + ' · ' : '') + (brand === 'Semua' ? 'semua brand' : brand) + ' · klik cabang untuk melihat performanya.';
-  if (!failOrEmpty(rbox, P.status, ranked.length ? null : 'Belum ada data untuk periode ini.')) drawRank(rbox, ranked, { sel: branch, rate: isRate, label: mLabel, fmt: fmtM, onClick: (s) => dash.setParams({ branch: s }) });
+  const RANK_TOP = 7;
+  const rmore = $('#rank-more');
+  let rshown = ranked;
+  if (!rankAll && ranked.length > RANK_TOP) {
+    rshown = ranked.slice(0, RANK_TOP);
+    const selRow = branch ? ranked.find((r) => r.scope === branch) : null;
+    if (selRow && !rshown.includes(selRow)) rshown = [...rshown, selRow];
+  }
+  if (!failOrEmpty(rbox, P.status, ranked.length ? null : 'Belum ada data untuk periode ini.')) drawRank(rbox, rshown, { sel: branch, rate: isRate, label: mLabel, fmt: fmtM, onClick: (s) => dash.setParams({ branch: s }) });
+  rmore.hidden = !(P.status === 'ok' && ranked.length > RANK_TOP);
+  rmore.textContent = rankAll ? 'Tampilkan top ' + RANK_TOP + ' saja' : 'Breakdown: lihat semua ' + ranked.length + ' cabang';
+  rmore.setAttribute('aria-expanded', String(rankAll));
+  if (!rankAll && ranked.length > RANK_TOP) $('#rank-sub').textContent = 'Top ' + RANK_TOP + ' dari ' + ranked.length + ' cabang · ' + $('#rank-sub').textContent;
   const rrows = R.status === 'ok' ? R.data.filter((r) => r.scope === scope && r.gran === rgran).sort((a, b) => a.period.localeCompare(b.period)) : [];
   const shown = rgran === 'week' ? rrows.slice(-16) : rrows;
   const rperiod = p.rperiod && rrows.some((r) => r.period === p.rperiod) ? p.rperiod : rrows.length ? rrows[rrows.length - 1].period : null;
