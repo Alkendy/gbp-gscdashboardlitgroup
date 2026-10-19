@@ -75,3 +75,21 @@ export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat service-account.json)"
 python scripts/update_data.py
 python -m http.server 8000   # lalu buka http://localhost:8000
 ```
+
+
+## Social Media Performance (Instagram & TikTok)
+
+Halaman `social.html` menampilkan performa akun Instagram dan TikTok semua brand (EVER, Ruhee, Lavere): ringkasan per akun, metrik dan rasio, tren harian, serta daftar konten 7/14 hari. Halaman ini bisa dibuka dari menu kiri **Social Media Performance**.
+
+- Data diambil dari **Windsor.ai** oleh GitHub Actions (`scripts/update_social.py`) bersamaan dengan update GBP/GSC setiap 3 jam.
+- Disimpan sebagai `data/social_*.json` (jangan diedit manual): data harian 200 hari terakhir dan konten 60 hari terakhir.
+
+### Pemasangan (sekali saja)
+1. Windsor.ai → menu akun → **API key** → salin API key.
+2. Repo → **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `WINDSOR_API_KEY`
+   - Secret: tempel API key Windsor.ai.
+3. Repo → tab **Actions** → **Update data dashboard** → **Run workflow**.
+4. Buka `https://<username>.github.io/<nama-repo>/social.html` atau pilih menu **Social Media Performance**.
+
+Akun Instagram/TikTok yang tampil mengikuti akun yang terhubung di Windsor.ai. Pengelompokan brand diatur di konstanta `BRAND` di dalam `social.html`.

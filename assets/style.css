@@ -157,3 +157,9 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
   background: var(--color-bg); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 8px var(--cds-pad-sm); }
 .gb-more:hover { border-color: var(--color-fg-muted); }
 .gb-more[hidden] { display: none; }
+
+/* ---------- menu ke halaman Social Media ---------- */
+.gb-entry-link { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+.gb-entry-link:hover { border-color: var(--color-fg-muted); }
+.gb-entry-link .gb-en { font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); }
+.gb-entry-link .gb-ed { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
