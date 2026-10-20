@@ -57,6 +57,33 @@ def fetch_range(connector, fields, start, end):
     return [r for r in rows if lo <= str(r.get("date", ""))[:10] <= hi]
 
 
+def fetch_merged(connector, groups, start, end):
+    """Ambil beberapa kelompok metrik terpisah lalu gabungkan per (tanggal, akun).
+    Bila satu kelompok ditolak, metriknya dicoba satu per satu."""
+    merged, missing = {}, []
+    def add(rows):
+        for r in rows:
+            k = (str(r.get("date", ""))[:10], r.get("account_name"))
+            merged.setdefault(k, {"date": k[0], "account_name": k[1]}).update(r)
+    for metrics in groups:
+        try:
+            add(fetch_range(connector, ["date", "account_name"] + metrics, start, end))
+            continue
+        except Exception as e:  # noqa: BLE001
+            print(f"  kelompok {metrics} ditolak, dicoba satu per satu ({e})")
+        for m in metrics:
+            try:
+                add(fetch_range(connector, ["date", "account_name", m], start, end))
+            except Exception as e:  # noqa: BLE001
+                print(f"  metrik {m} dilewati: {e}")
+                missing.append(m)
+    if not merged:
+        raise RuntimeError("tidak ada metrik yang berhasil diambil")
+    if missing:
+        print("  Metrik yang tidak tersedia: " + ", ".join(missing))
+    return sorted(merged.values(), key=lambda r: (r["date"], str(r["account_name"])))
+
+
 def save(name, rows):
     with open(os.path.join(OUT, name + ".json"), "w", encoding="utf-8") as f:
         json.dump(rows, f, ensure_ascii=False, separators=(",", ":"))
@@ -70,9 +97,9 @@ def main():
     d_from = today - dt.timedelta(days=DAILY_DAYS)
     c_from = today - dt.timedelta(days=CONTENT_DAYS)
     jobs = [
-        ("social_ig_daily", lambda: fetch_range("instagram", ["date", "account_name", "views", "views_non_followers", "reach",
-                                                              "total_interactions", "saves", "shares", "follower_count",
-                                                              "profile_links_taps"], d_from, today)),
+        ("social_ig_daily", lambda: fetch_merged("instagram", [["views", "total_interactions", "saves", "shares"],
+                                                               ["views_non_followers"], ["reach"], ["follower_count"],
+                                                               ["profile_links_taps"]], d_from, today)),
         ("social_ig_profile", lambda: call("instagram", ["account_name", "account_id", "followers_count", "media_count"])),
         ("social_ig_media", lambda: fetch_range("instagram", ["date", "account_name", "media_id", "media_permalink", "media_type",
                                                               "media_caption", "media_views", "media_reach", "media_engagement",
