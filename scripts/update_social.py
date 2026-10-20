@@ -47,12 +47,22 @@ def call(connector, fields, date_from=None, date_to=None):
     raise RuntimeError(f"{label}: gagal setelah 4 percobaan")
 
 
-def fetch_range(connector, fields, start, end):
-    rows, cur = [], start
+def fetch_range(connector, fields, start, end, tolerant=False):
+    """tolerant=True: periode 30 hari yang ditolak dilewati (mis. metrik yang hanya
+    disediakan Instagram untuk 30 hari terakhir), periode lain tetap diambil."""
+    rows, cur, ok = [], start, 0
     while cur <= end:
         stop = min(cur + dt.timedelta(days=CHUNK_DAYS - 1), end)
-        rows += call(connector, fields, cur.isoformat(), stop.isoformat())
+        try:
+            rows += call(connector, fields, cur.isoformat(), stop.isoformat())
+            ok += 1
+        except Exception as e:  # noqa: BLE001
+            if not tolerant:
+                raise
+            print(f"  periode {cur}..{stop} dilewati: {e}")
         cur = stop + dt.timedelta(days=1)
+    if tolerant and not ok:
+        raise RuntimeError("semua periode ditolak")
     lo, hi = start.isoformat(), end.isoformat()
     return [r for r in rows if lo <= str(r.get("date", ""))[:10] <= hi]
 
@@ -73,7 +83,7 @@ def fetch_merged(connector, groups, start, end):
             print(f"  kelompok {metrics} ditolak, dicoba satu per satu ({e})")
         for m in metrics:
             try:
-                add(fetch_range(connector, ["date", "account_name", m], start, end))
+                add(fetch_range(connector, ["date", "account_name", m], start, end, tolerant=True))
             except Exception as e:  # noqa: BLE001
                 print(f"  metrik {m} dilewati: {e}")
                 missing.append(m)
