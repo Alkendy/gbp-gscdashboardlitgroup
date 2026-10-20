@@ -190,9 +190,7 @@ a.sm-entry-item:hover { border-color: var(--color-fg-muted); }
     </label>
     <div class="sm-presets" role="group" aria-label="Rentang cepat">
       <button type="button" class="sm-btn" data-days="7">7 hari</button>
-      <button type="button" class="sm-btn" data-days="14">14 hari</button>
-      <button type="button" class="sm-btn" data-days="28">28 hari</button>
-      <button type="button" class="sm-btn" data-days="90">90 hari</button>
+      <button type="button" class="sm-btn" data-days="30">30 hari</button>
     </div>
     <button type="button" class="sm-btn sm-reset">Reset</button>
   </div>
@@ -555,7 +553,7 @@ const IG_CARDS = [
   { f: 'views', l: 'Views', t: 'count', c: 'views_chg', ct: 'chg', d: 'Total tayangan konten.', i: 'Jumlah tayangan semua konten akun (feed, Reels, Stories) di periode, dijumlahkan dari data harian Instagram. Satu orang dapat menonton lebih dari sekali, sehingga angka ini lebih besar dari reach. Perubahan % = (periode ini − periode sebelumnya) ÷ periode sebelumnya.' },
   { f: 'interactions', l: 'Interaksi', t: 'count', c: 'interactions_chg', ct: 'chg', d: 'Likes, comments, saves dan shares.', i: 'Total likes, comments, saves dan shares dari semua konten (total interactions Instagram), dijumlahkan per hari. Kenaikan menunjukkan konten makin memancing respons audiens.' },
   { f: 'save_share', l: 'Saves + shares', t: 'count', c: 'save_share_chg', ct: 'chg', d: 'Konten yang disimpan dan dibagikan.', i: 'Jumlah saves + shares di periode. Dua aksi ini sinyal terkuat bagi algoritma Instagram karena menunjukkan konten dianggap berguna atau layak dibagikan.' },
-  { f: 'new_followers', l: 'Follower baru', t: 'count', c: 'new_followers_chg', ct: 'chg', d: 'Akun yang mulai mengikuti pada periode ini.', i: 'Jumlah akun yang mulai mengikuti per hari, dijumlahkan dalam periode. Instagram tidak mengurangi unfollow di angka ini. Data hari terakhir dapat bernilai 0 karena data belum lengkap.' },
+  { f: 'new_followers', l: 'Follower baru', t: 'count', c: 'new_followers_chg', ct: 'chg', d: 'Akun yang mulai mengikuti pada periode ini.', i: 'Jumlah akun yang mulai mengikuti per hari, dijumlahkan dalam periode. Instagram tidak mengurangi unfollow di angka ini dan hanya menyediakan data ini untuk sekitar 30 hari terakhir. Data hari terakhir dapat bernilai 0 karena data belum lengkap.' },
   { f: 'followers', l: 'Total follower', t: 'count', c: 'fgr', ct: 'rate', pre: 'Growth ', d: 'Jumlah follower saat ini.', i: 'Jumlah follower akun saat ini (bukan per akhir periode). Untuk brand atau semua akun = jumlah follower akun di dalamnya. Growth = follower baru ÷ follower awal periode (follower sekarang − follower baru).' },
   { f: 'link_taps', l: 'Contact taps', t: 'count', c: 'link_taps_chg', ct: 'chg', d: 'Klik tombol telepon, email, pesan dan alamat.', i: 'Klik tombol kontak di profil: telepon, email, kirim pesan dan alamat, dijumlahkan per hari. Klik link di bio tidak termasuk karena sudah tidak disediakan Instagram.' },
 ];
