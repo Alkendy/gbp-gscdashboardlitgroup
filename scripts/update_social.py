@@ -16,7 +16,7 @@ import urllib.request
 KEY = os.environ.get("WINDSOR_API_KEY", "").strip()
 BASE = "https://connectors.windsor.ai/"
 DAILY_DAYS = 200     # cukup untuk rentang 90 hari + periode pembanding
-CONTENT_DAYS = 60    # konten ditampilkan maks. 14 hari, disimpan 60 hari terakhir
+CONTENT_DAYS = 200   # konten mengikuti periode yang dipilih (maks. 200 hari terakhir)
 CHUNK_DAYS = 30
 OUT = os.path.join(os.path.dirname(__file__), "..", "data")
 
