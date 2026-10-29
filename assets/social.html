@@ -1,0 +1,1303 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#faf9f6">
+  <title>LIT Group · Social Media Performance</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/theme.js"></script>
+</head>
+<body>
+  <div id="dash-root">
+<style>
+.sm { font-family: var(--font-anthropic-sans); color: var(--color-fg); position: relative; }
+#dash-root { --dash-gutter: 0; }
+.sm-shell { display: flex; align-items: flex-start; min-height: 100vh; }
+.sm-side { position: sticky; top: 0; flex: 0 0 248px; width: 248px; max-height: 100vh; overflow-y: auto; display: flex; flex-direction: column; gap: var(--cds-gap-md); background: var(--color-panel); border-right: 1px solid var(--color-border-line); padding: var(--cds-pad-lg) var(--cds-pad-md); align-self: stretch; }
+.sm-side-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--cds-gap-sm); }
+.sm-side-title { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-heading); }
+.sm-credit { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: 2px; }
+.sm-side-foot { margin-top: auto; }
+.sm-entry { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+.sm-entry-item { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+a.sm-entry-item:hover { border-color: var(--color-fg-muted); }
+.sm-entry-item .sm-en { font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); }
+.sm-entry-item .sm-ed { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sm-entry-item.is-active { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+.sm-entry-item.is-active .sm-ed { color: inherit; opacity: .75; }
+.sm-subnav { display: flex; flex-direction: column; gap: 2px; padding-left: var(--cds-pad-sm); border-left: 2px solid var(--color-border-line); margin-left: var(--cds-pad-sm); }
+.sm-subnav button { font: inherit; font-size: var(--cds-font-size-caption); text-align: left; background: transparent; color: var(--color-fg-muted); border: 0; border-radius: var(--cds-radius); padding: 8px var(--cds-pad-sm); cursor: pointer; min-height: 36px; }
+.sm-subnav button:hover { color: var(--color-fg); background: var(--color-bg); }
+.sm-iconbtn { font: inherit; font-size: 15px; line-height: 1; width: 36px; height: 36px; flex: 0 0 36px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; background: var(--color-bg); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 0; }
+.sm-iconbtn:hover { border-color: var(--color-fg-muted); }
+.sm-menubtn, .sm-railbtn, .sm-openbtn { display: none; }
+.sm-main { flex: 1 1 auto; min-width: 0; padding: clamp(12px, 3vw, 32px); }
+.sm-main > .sm-inner { max-width: 1440px; margin-inline: auto; }
+.sm-herorow { display: flex; align-items: center; gap: var(--cds-gap-sm); }
+.sm-shell.is-collapsed .sm-side { flex-basis: 56px; width: 56px; padding-inline: 10px; overflow: hidden; }
+.sm-shell.is-collapsed .sm-side > :not(.sm-railbtn) { display: none; }
+.sm-shell.is-collapsed .sm-railbtn { display: inline-flex; }
+.sm-info { font: inherit; font-size: 10px; font-weight: 600; width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--color-border-line); background: transparent; color: var(--color-fg-muted); cursor: pointer; padding: 0; margin-left: 6px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; line-height: 1; }
+.sm-info:hover, .sm-info[aria-expanded="true"] { color: var(--color-bg); background: var(--color-fg); border-color: var(--color-fg); }
+.sm-pop { position: absolute; z-index: 20; width: min(320px, calc(100% - 16px)); background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-sm) var(--cds-pad-md); font-size: var(--cds-font-size-caption); line-height: 1.55; color: var(--color-fg); white-space: pre-line; }
+.sm-pop[hidden] { display: none; }
+@media (max-width: 900px) {
+  .sm-shell { flex-direction: column; align-items: stretch; }
+  .sm-side { position: static; width: auto; flex: none; max-height: none; border-right: 0; border-bottom: 1px solid var(--color-border-line); padding: var(--cds-pad-md); gap: var(--cds-gap-sm); }
+  .sm-side-head { align-items: center; }
+  .sm-menubtn { display: inline-flex; }
+  .sm-collapse, .sm-railbtn { display: none !important; }
+  .sm-shell .sm-side > .sm-entry, .sm-shell .sm-side > .sm-side-foot { display: none; }
+  .sm-shell.is-open .sm-side > .sm-entry { display: flex; }
+  .sm-shell.is-open .sm-side > .sm-side-foot { display: block; }
+  .sm-shell.is-collapsed .sm-side { width: auto; flex-basis: auto; padding: var(--cds-pad-md); }
+  .sm-shell.is-collapsed .sm-side > .sm-side-head { display: flex; }
+}
+@media (max-width: 640px) {
+  .sm-title { font-size: var(--cds-font-size-heading); }
+  .sm-card { padding: var(--cds-pad-md); }
+  .sm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--cds-gap-sm); }
+  .sm-kpi-val { font-size: var(--cds-font-size-heading); }
+  .sm-def { display: none; }
+  .sm-filters { padding: var(--cds-pad-sm); }
+  .sm-f { flex: 1 1 calc(50% - var(--cds-gap-sm)); min-width: 0; }
+  .sm-f select, .sm-f input { width: 100%; min-height: 40px; }
+  .sm-export { flex: 1 1 100%; }
+  .sm-reset { flex: 1 1 100%; }
+  .sm-btn { min-height: 40px; }
+  .sm-tabs > * { flex: 1 1 100%; }
+  .sm-ctl .sm-btn, .sm-ctl select { flex: 1 1 0; }
+  .sm-table .sm-hn { display: none; }
+  .sm-gallery { grid-template-columns: 1fr; }
+  .sm-cap { min-width: 12rem; }
+}
+.sm-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+.sm-take { color: var(--color-fg-muted); font-size: var(--cds-font-size-body); margin: var(--cds-gap-xs) 0 0; }
+.sm b { font-weight: var(--cds-font-weight-medium); color: var(--color-fg); }
+.sm-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: flex-end; margin: var(--cds-gap-lg) 0 0; padding: var(--cds-pad-md); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+.sm-f { display: flex; flex-direction: column; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sm-f select, .sm-f input, .sm-btn, .sm-search { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; }
+.sm-btn { cursor: pointer; }
+.sm-btn[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+.sm-f input[type="date"] { color-scheme: light; cursor: pointer; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sm-f input[type="date"] { color-scheme: dark; } }
+:root[data-theme="dark"] .sm-f input[type="date"] { color-scheme: dark; }
+.sm-f input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 1; width: 18px; height: 18px; background: var(--color-fg); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E") center / 18px 18px no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E") center / 18px 18px no-repeat; }
+.sm-export { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.sm-export:disabled { opacity: .6; cursor: progress; }
+.sm-section { margin-top: var(--cds-gap-xl); }
+.sm-h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.sm-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0 0 4px; }
+.sm-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0 0 var(--cds-gap-sm); }
+.sm-sub { color: var(--color-fg-muted); font-weight: 400; }
+.sm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); margin-bottom: var(--cds-gap-md); }
+.sm-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
+.sm-kpi-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sm-kpi-val { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; margin: 4px 0 2px; min-height: 1.3em; }
+.sm-kpi-chg { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; min-height: 1.3em; color: var(--color-fg-muted); }
+.sm-def { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: 6px; }
+.sm-up { color: var(--color-ok); }
+.sm-down { color: var(--color-bad); }
+.sm-flat { color: var(--color-fg-muted); }
+.sm-tablewrap { max-height: 34rem; overflow: auto; }
+.sm-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.sm-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; z-index: 1; }
+.sm-table th button:not(.sm-info) { all: unset; cursor: pointer; font-weight: var(--cds-font-weight-medium); }
+.sm-table th[aria-sort="ascending"] button::after { content: " ▲"; }
+.sm-table th[aria-sort="descending"] button::after { content: " ▼"; }
+.sm-table td, .sm-table th { padding: 8px 10px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; vertical-align: top; }
+.sm-table .num { text-align: right; }
+.sm-cap { white-space: normal !important; min-width: 16rem; max-width: 26rem; }
+.sm-cap span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sm-click tbody tr[data-key] { cursor: pointer; }
+.sm-table tr.sm-sel td { font-weight: var(--cds-font-weight-medium); }
+.sm-table tr.sm-sel td:first-child { box-shadow: inset 3px 0 0 var(--color-fg); }
+.sm-link { color: var(--color-fg); }
+.sm-chart { position: relative; min-height: 220px; }
+.sm-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; }
+.sm-tip-d { color: var(--cds-text-secondary); }
+.sm-tick { fill: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sm-gridline { stroke: var(--cds-chart-grid); stroke-width: 1; }
+.sm-tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); align-items: center; margin-bottom: var(--cds-gap-sm); }
+.sm-search { flex: 1; min-width: 10rem; }
+.sm-fail { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-family: var(--font-anthropic-sans); min-height: inherit; }
+.sm-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.sm-empty { padding: var(--cds-pad-lg) 0; text-align: center; }
+.sm-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-md); }
+.sm-post { display: flex; flex-direction: column; gap: var(--cds-gap-xs); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+.sm-post-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); }
+.sm-post-acc { font-weight: var(--cds-font-weight-medium); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sm-badge { font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 1px 8px; color: var(--color-fg-muted); white-space: nowrap; }
+.sm-post-meta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sm-post-cap { font-size: var(--cds-font-size-caption); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; min-height: 5.6em; white-space: pre-line; }
+.sm-post-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 6px; border-top: 1px solid var(--color-border-line); padding-top: 8px; }
+.sm-stat-l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.sm-stat-v { font-variant-numeric: tabular-nums; font-weight: var(--cds-font-weight-medium); font-size: var(--cds-font-size-body); }
+.sm-post-link { margin-top: auto; padding-top: 6px; font-size: var(--cds-font-size-caption); }
+.sm-more { margin-top: var(--cds-gap-md); }
+.sm-ctl { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); align-items: center; }
+.sm-ctl-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-right: 2px; }
+.sm-ctl select { font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 6px 10px; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+[data-dash-source-state=empty] { color: transparent; }
+</style>
+
+<div class="sm">
+<div class="sm-shell" id="shell">
+<aside class="sm-side" id="menu" aria-label="Menu dashboard">
+  <button type="button" class="sm-iconbtn sm-railbtn" aria-label="Tampilkan menu" title="Tampilkan menu">☰</button>
+  <div class="sm-side-head">
+    <div><div class="sm-side-title">LIT Group</div><div class="sm-credit">Digital Performance</div></div>
+    <button type="button" class="sm-iconbtn sm-menubtn" aria-label="Buka menu" aria-expanded="false" aria-controls="side-nav">☰</button>
+    <button type="button" class="sm-iconbtn sm-collapse" aria-label="Sembunyikan menu" title="Sembunyikan menu (tampil full)">«</button>
+  </div>
+  <nav class="sm-entry" id="side-nav" aria-label="Pilih dashboard">
+    <a class="sm-entry-item" href="https://lit-digital-dashboard.vercel.app/#gbp" target="_blank" rel="noopener noreferrer"><span class="sm-en">Google Business Profile ↗</span><span class="sm-ed">Cabang · traffic · rating · review</span></a>
+    <a class="sm-entry-item" href="https://lit-digital-dashboard.vercel.app/#gsc" target="_blank" rel="noopener noreferrer"><span class="sm-en">Google Search Console ↗</span><span class="sm-ed">Website · klik · keyword · audit</span></a>
+    <div class="sm-entry-item is-active" aria-current="page"><span class="sm-en">Social Media Performance</span><span class="sm-ed">Instagram · TikTok · konten</span></div>
+    <div class="sm-subnav" aria-label="Bagian halaman">
+      <button type="button" data-go="semua-akun">Ringkasan Performa Akun</button>
+      <button type="button" data-go="instagram">Instagram</button>
+      <button type="button" data-go="tiktok">TikTok</button>
+      <button type="button" data-go="konten">Performa Konten</button>
+    </div>
+  </nav>
+  <div class="sm-side-foot sm-credit">Developed by DDigital</div>
+</aside>
+<div class="sm-main"><div class="sm-inner">
+  <header id="header">
+    <h1 class="sm-title">LIT Group · Social Media Performance</h1>
+    <p class="sm-take" id="takeaway"><span class="sm-period"></span><span class="sm-best"></span></p>
+  </header>
+
+  <div class="sm-filters" id="filter">
+    <label class="sm-f">Platform
+      <select class="sm-platform" aria-label="Platform">
+        <option value="all">Semua platform</option>
+        <option value="ig">Instagram</option>
+        <option value="tt">TikTok</option>
+      </select>
+    </label>
+    <label class="sm-f">Brand
+      <select class="sm-brand" aria-label="Brand" data-source="overview"></select>
+    </label>
+    <label class="sm-f">Akun
+      <select class="sm-account" aria-label="Akun" data-source="overview"></select>
+    </label>
+    <label class="sm-f">Tanggal mulai
+      <input class="sm-start" type="date" min="2020-01-01" max="2099-12-31" aria-label="Tanggal mulai">
+    </label>
+    <label class="sm-f">Tanggal akhir
+      <input class="sm-end" type="date" min="2020-01-01" max="2099-12-31" aria-label="Tanggal akhir">
+    </label>
+    <button type="button" class="sm-btn sm-reset">Reset Filter</button>
+    <button type="button" class="sm-btn sm-export" title="Unduh data sesuai filter dalam format Excel (.xlsx)">Export Excel</button>
+  </div>
+
+  <section class="sm-section" id="semua-akun">
+    <h2 class="sm-h2">Ringkasan Performa Akun<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Satu baris per akun Instagram dan TikTok. Views Instagram = views akun; views TikTok = video views. Interaksi Instagram = likes, comments, saves, shares; TikTok = likes, comments, shares. ER = interaksi ÷ views. Δ Views = perubahan % vs periode sebelumnya; Δ ER dalam poin persen. Brand: Ever (everlash_lash_expert, evernails, everbody, everspmu, TikTok EVER IDN), Ruhee (ruhee.id, TikTok RUHEE), Ruheediary (ruhee.diary), Lavere (laverelash).">!</button></h2>
+    <p class="sm-note">Pilih baris untuk menampilkan detail akun. Perubahan dibandingkan dengan periode sebelumnya yang memiliki durasi sama.</p>
+    <div class="sm-card">
+      <div class="sm-tablewrap">
+        <table class="sm-table sm-click" id="tabel-akun" data-source="overview" data-row-key="key"></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sm-section" id="instagram">
+    <h2 class="sm-h2">Instagram <span class="sm-sub sm-ig-label"></span></h2>
+    <p class="sm-note">Total metrik pada periode terpilih beserta perubahan terhadap periode sebelumnya.</p>
+    <div class="sm-grid" id="ig-angka"></div>
+    <h3 class="sm-h3">Rasio Performa<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Rate dihitung dari total periode (jumlah pembilang ÷ jumlah penyebut), bukan rata-rata rate harian, agar akurat untuk periode berapa pun. Perubahan ditulis dalam poin persen: 1,20% → 1,50% = +0,30 pp.">!</button></h3>
+    <p class="sm-note">Perubahan rasio dinyatakan dalam poin persentase (pp).</p>
+    <div class="sm-grid" id="ig-rate"></div>
+    <div class="sm-card" id="ig-tren-card">
+      <h3 class="sm-h3">Tren Views Harian<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Total views Instagram per hari untuk akun atau brand yang dipilih. Arahkan kursor (pada perangkat seluler: ketuk) ke batang untuk melihat interaksi dan ER hari itu. Batang hari terakhir dapat lebih rendah karena data belum lengkap.">!</button></h3>
+      <p class="sm-note">Arahkan kursor atau ketuk grafik untuk melihat interaksi dan engagement rate harian.</p>
+      <div class="sm-chart" id="ig-tren" data-source="ig_trend"></div>
+    </div>
+  </section>
+
+  <section class="sm-section" id="tiktok">
+    <h2 class="sm-h2">TikTok <span class="sm-sub sm-tt-label"></span></h2>
+    <p class="sm-note">Data TikTok tersedia dengan jeda 1–2 hari, sehingga data hari terakhir dapat belum tersedia.</p>
+    <div class="sm-grid" id="tt-angka"></div>
+    <h3 class="sm-h3">Rasio Performa<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Rate dihitung dari total periode (jumlah pembilang ÷ jumlah penyebut), bukan rata-rata rate harian, agar akurat untuk periode berapa pun. Perubahan ditulis dalam poin persen: 1,20% → 1,50% = +0,30 pp.">!</button></h3>
+    <p class="sm-note">Perubahan rasio dinyatakan dalam poin persentase (pp).</p>
+    <div class="sm-grid" id="tt-rate"></div>
+    <div class="sm-card" id="tt-tren-card">
+      <h3 class="sm-h3">Tren Video Views Harian<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Total video views TikTok per hari untuk akun atau brand yang dipilih. Hari yang datanya belum dikirim oleh TikTok tidak ditampilkan. Ketuk atau arahkan kursor ke batang untuk melihat interaction dan engagement rate pada hari tersebut.">!</button></h3>
+      <p class="sm-note">Arahkan kursor atau ketuk grafik untuk melihat interaction dan engagement rate harian.</p>
+      <div class="sm-chart" id="tt-tren" data-source="tt_trend"></div>
+    </div>
+  </section>
+
+  <section class="sm-section" id="konten">
+    <h2 class="sm-h2">Performa Konten<button type="button" class="sm-info" aria-label="Cara hitung" data-info="Instagram: Interaksi = likes + comments + saves + shares per post; ER = interaksi ÷ views; Save+share rate = (saves + shares) ÷ views; Follows = akun yang mengikuti setelah melihat post (tidak tersedia untuk Reels). TikTok: Interaction = likes + comments + shares; ER = interaction ÷ views; Favorites = video disimpan; Ditonton penuh = % penonton yang menonton sampai habis. Angka konten adalah total sejak diposting sampai hari ini, bukan hanya di periode.">!</button> <span class="sm-sub sm-c-label"></span></h2>
+    <p class="sm-note">Konten yang dipublikasikan pada periode terpilih, sesuai filter platform, brand, dan akun. Pilih “Lihat di…” untuk membuka unggahan asli.</p>
+    <div class="sm-tabs">
+      <div class="sm-ctl" role="group" aria-label="Platform konten">
+        <button type="button" class="sm-btn sm-tab" id="tab-all" data-tab="all">Semua</button>
+        <button type="button" class="sm-btn sm-tab" id="tab-ig" data-tab="ig">Instagram</button>
+        <button type="button" class="sm-btn sm-tab" id="tab-tt" data-tab="tt">TikTok</button>
+      </div>
+      <div class="sm-ctl">
+        <select class="sm-csort" aria-label="Urutkan konten">
+          <optgroup label="Awareness">
+            <option value="views">Views tertinggi</option>
+            <option value="reach">Reach tertinggi</option>
+          </optgroup>
+          <optgroup label="Engagement">
+            <option value="inter">Engagement tertinggi</option>
+            <option value="er">Engagement Rate tertinggi</option>
+            <option value="saves">Saves tertinggi</option>
+            <option value="shares">Shares tertinggi</option>
+          </optgroup>
+          <optgroup label="Conversion">
+            <option value="link">Link Taps tertinggi</option>
+            <option value="follows">New Followers tertinggi</option>
+          </optgroup>
+          <optgroup label="Lainnya">
+            <option value="date">Terbaru</option>
+          </optgroup>
+        </select>
+        <button type="button" class="sm-btn sm-view" data-view="card">Kartu</button>
+        <button type="button" class="sm-btn sm-view" data-view="table">Tabel</button>
+      </div>
+      <input class="sm-search" type="search" placeholder="Cari caption atau akun…" aria-label="Cari konten">
+    </div>
+    <div id="konten-kartu">
+      <div class="sm-gallery" id="galeri" data-source="ig_content tt_content"></div>
+      <button type="button" class="sm-btn sm-more" hidden>Tampilkan lebih banyak</button>
+    </div>
+    <div id="konten-tabel">
+      <div class="sm-card" id="konten-ig-card">
+        <h3 class="sm-h3">Instagram</h3>
+        <div class="sm-tablewrap">
+          <table class="sm-table" id="konten-ig" data-source="ig_content" data-row-key="media_id"></table>
+        </div>
+      </div>
+      <div class="sm-card" id="konten-tt-card" style="margin-top: var(--cds-gap-md)">
+        <h3 class="sm-h3">TikTok</h3>
+        <div class="sm-tablewrap">
+          <table class="sm-table" id="konten-tt" data-source="tt_content" data-row-key="video_id"></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+</div>
+</div>
+
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="assets/social-shim.js"></script>
+  <script>
+/* XlsxLite — pembuat file Excel (.xlsx) ringan tanpa library luar.
+   XlsxLite.build(sheets) → Uint8Array
+   sheet = { name, header: [..], types: ['text'|'int'|'num'|'pct'], rows: [[..]], widths?: [..] }
+   Sel dapat berupa nilai biasa atau { v, t } untuk tipe per sel. */
+window.XlsxLite = (function () {
+  const enc = new TextEncoder();
+  const T = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; T[n] = c >>> 0; }
+  const crc32 = (b) => { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = T[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  const u16 = (v) => [v & 255, (v >>> 8) & 255];
+  const u32 = (v) => [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255];
+  function zip(files) {
+    const d = new Date();
+    const time = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+    const date = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    const parts = [], central = [];
+    let off = 0;
+    for (const f of files) {
+      const name = enc.encode(f.name), data = f.data, crc = crc32(data);
+      const head = new Uint8Array([...u32(0x04034b50), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(time), ...u16(date),
+        ...u32(crc), ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0)]);
+      parts.push(head, name, data);
+      central.push(new Uint8Array([...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(time), ...u16(date),
+        ...u32(crc), ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0),
+        ...u32(0), ...u32(off)]), name);
+      off += head.length + name.length + data.length;
+    }
+    const csize = central.reduce((s, p) => s + p.length, 0);
+    const end = new Uint8Array([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length),
+      ...u32(csize), ...u32(off), ...u16(0)]);
+    const all = [...parts, ...central, end];
+    const out = new Uint8Array(all.reduce((s, p) => s + p.length, 0));
+    let i = 0;
+    for (const p of all) { out.set(p, i); i += p.length; }
+    return out;
+  }
+  const esc = (s) => String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const col = (i) => { let s = ''; i += 1; while (i > 0) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+  const STYLE = { head: 1, int: 2, num: 3, pct: 4, text: 0 };
+  function cell(ref, value, type) {
+    if (value && typeof value === 'object' && 'v' in value) { type = value.t || type; value = value.v; }
+    if (value == null || value === '' || (typeof value === 'number' && !isFinite(value))) return '';
+    if (typeof value === 'number' && type !== 'text') return `<c r="${ref}" s="${STYLE[type] || STYLE.num}"><v>${value}</v></c>`;
+    return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${esc(value)}</t></is></c>`;
+  }
+  function sheetXml(s) {
+    const types = s.types || [];
+    const rows = [s.header, ...s.rows];
+    const widths = s.widths || s.header.map((h, i) => {
+      let w = String(h).length;
+      for (const r of s.rows.slice(0, 300)) { const v = r[i] && typeof r[i] === 'object' ? r[i].v : r[i]; w = Math.max(w, String(v == null ? '' : v).length); }
+      return Math.min(60, Math.max(10, w + 2));
+    });
+    const cols = widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('');
+    const body = rows.map((r, ri) => `<row r="${ri + 1}">` + r.map((v, ci) => ri === 0
+      ? `<c r="${col(ci)}1" t="inlineStr" s="1"><is><t xml:space="preserve">${esc(v)}</t></is></c>`
+      : cell(col(ci) + (ri + 1), v, types[ci] || 'text')).join('') + '</row>').join('');
+    const last = col(Math.max(0, s.header.length - 1));
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+      '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>' +
+      `<cols>${cols}</cols><sheetData>${body}</sheetData>` +
+      (s.rows.length ? `<autoFilter ref="A1:${last}${s.rows.length + 1}"/>` : '') + '</worksheet>';
+  }
+  function cleanName(n, used) {
+    let s = String(n || 'Sheet').replace(/[\[\]:*?\/\\]/g, ' ').trim().slice(0, 31) || 'Sheet';
+    let k = s, i = 2;
+    while (used.has(k.toLowerCase())) { const suf = ' (' + i++ + ')'; k = s.slice(0, 31 - suf.length) + suf; }
+    used.add(k.toLowerCase());
+    return k;
+  }
+  function build(sheets) {
+    const used = new Set();
+    const list = sheets.filter(Boolean).map((s) => ({ ...s, name: cleanName(s.name, used) }));
+    if (!list.length) throw new Error('Tidak ada data untuk diekspor');
+    const files = [];
+    const add = (name, text) => files.push({ name, data: enc.encode(text) });
+    add('[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+      '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' +
+      '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+      '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' +
+      list.map((s, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('') + '</Types>');
+    add('_rels/.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>');
+    add('xl/workbook.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' +
+      list.map((s, i) => `<sheet name="${esc(s.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('') + '</sheets>' +
+      list.map((s, i) => s.rows.length ? `<definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${esc(s.name).replace(/'/g, "''")}'!$A$1:$${col(Math.max(0, s.header.length - 1))}$${s.rows.length + 1}</definedName></definedNames>` : '').join('').replace(/<\/definedNames><definedNames>/g, '') + '</workbook>');
+    add('xl/_rels/workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      list.map((s, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('') +
+      `<Relationship Id="rId${list.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
+    add('xl/styles.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+      '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>' +
+      '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEFEDE8"/><bgColor indexed="64"/></patternFill></fill></fills>' +
+      '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
+      '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+      '<cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+      '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>' +
+      '<xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>' +
+      '<xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>' +
+      '<xf numFmtId="10" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs>' +
+      '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>');
+    list.forEach((s, i) => add(`xl/worksheets/sheet${i + 1}.xml`, sheetXml(s)));
+    return zip(files);
+  }
+  /* Simpan file: lewat fitur unduhan Claude bila tersedia, selain itu unduhan biasa di browser. */
+  async function save(bytes, filename) {
+    if (window.claude && typeof window.claude.use === 'function') {
+      const dl = await window.claude.use('downloads');
+      if (!dl) throw Object.assign(new Error('Unduhan tidak tersedia di tampilan ini'), { code: 'unavailable' });
+      return dl.save({ filename, data: bytes });
+    }
+    const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    return { status: 'saved' };
+  }
+  return { build, save };
+})();
+</script>
+<script>
+const windsorLoader = {
+  description: 'Jawaban get_data Windsor.ai dijadikan baris; menunggu apabila laporan masih disiapkan.',
+  fn: async ({ answer, call, args }) => {
+    const parse = (a) => (typeof a === 'string' ? JSON.parse(a) : a);
+    let a = parse(answer);
+    for (let i = 0; a && a.status === 'pending' && i < 8; i++) {
+      await new Promise((r) => setTimeout(r, Math.min(Number(a.poll_after_seconds) || 10, 20) * 1000));
+      a = parse(await call('get_data', args));
+    }
+    if (!a || a.status === 'pending') throw new Error('Windsor.ai masih menyiapkan laporan ini; coba refresh beberapa saat lagi.');
+    if (!Array.isArray(a.data)) throw new Error(String(a.error || a.message || 'Jawaban Windsor.ai tidak berisi baris data.'));
+    return a.data;
+  },
+};
+dash.loader('ig_daily', windsorLoader);
+dash.loader('ig_prev', windsorLoader);
+dash.loader('ig_profile', windsorLoader);
+dash.loader('ig_media', windsorLoader);
+dash.loader('tt_daily', windsorLoader);
+dash.loader('tt_prev', windsorLoader);
+dash.loader('tt_videos', windsorLoader);
+dash.loader('ig_reposts', windsorLoader);
+
+dash.calc('ig_sum', {
+  inputs: ['ig_daily', 'ig_prev', 'ig_profile'],
+  title: 'Ringkasan Instagram',
+  description: 'Total periode, rate dan perubahan vs periode sebelumnya, per akun, per brand dan untuk semua akun.',
+  fn: (ig_daily, ig_prev, ig_profile) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    const groups = (a) => [a, 'Semua akun', 'Brand ' + (BRAND[a] || 'Lainnya')];
+    const K = ['views', 'views_non_followers', 'total_interactions', 'saves', 'shares', 'follower_count', 'profile_links_taps'];
+    const zero = () => Object.fromEntries(K.map((k) => [k, 0]));
+    const agg = (rows) => {
+      const m = {};
+      for (const r of rows) for (const a of groups(r.account_name)) {
+        const o = (m[a] = m[a] || zero());
+        for (const k of K) o[k] += Number(r[k]) || 0;
+      }
+      return m;
+    };
+    const cur = agg(ig_daily), prev = agg(ig_prev);
+    const fol = {};
+    for (const r of ig_profile) for (const a of groups(r.account_name)) fol[a] = (fol[a] || 0) + (Number(r.followers_count) || 0);
+    const div = (a, b) => (a != null && b ? a / b : null);
+    const chg = (a, b) => (b ? (a - b) / b : null);
+    const pp = (a, b) => (a == null || b == null ? null : a - b);
+    const rates = (o) => ({
+      er: div(o.total_interactions, o.views),
+      ssr: div(o.saves + o.shares, o.views),
+      nfvr: div(o.views_non_followers, o.views),
+      fcr: div(o.follower_count, o.views_non_followers),
+      ctr: div(o.profile_links_taps, o.views),
+    });
+    return Object.keys(cur).map((account) => {
+      const c = cur[account], p = prev[account] || zero(), rc = rates(c), rp = rates(p);
+      const followers = account in fol ? fol[account] : null;
+      const start = followers == null ? null : followers - c.follower_count;
+      const fgr = div(c.follower_count, start);
+      const fgrPrev = start == null ? null : div(p.follower_count, start - p.follower_count);
+      return {
+        account, views: c.views, views_non_followers: c.views_non_followers, interactions: c.total_interactions,
+        saves: c.saves, save_share: c.saves + c.shares, new_followers: c.follower_count, link_taps: c.profile_links_taps, followers, ...rc, fgr,
+        views_chg: chg(c.views, p.views), interactions_chg: chg(c.total_interactions, p.total_interactions),
+        save_share_chg: chg(c.saves + c.shares, p.saves + p.shares), new_followers_chg: chg(c.follower_count, p.follower_count),
+        link_taps_chg: chg(c.profile_links_taps, p.profile_links_taps),
+        er_chg: pp(rc.er, rp.er), ssr_chg: pp(rc.ssr, rp.ssr), nfvr_chg: pp(rc.nfvr, rp.nfvr),
+        fcr_chg: pp(rc.fcr, rp.fcr), ctr_chg: pp(rc.ctr, rp.ctr), fgr_chg: pp(fgr, fgrPrev),
+      };
+    });
+  },
+});
+
+dash.calc('tt_sum', {
+  inputs: ['tt_daily', 'tt_prev'],
+  title: 'Ringkasan TikTok',
+  description: 'Total periode, rate dan perubahan vs periode sebelumnya, per akun, per brand dan untuk semua akun. Hari yang datanya belum dikirim TikTok tidak dihitung untuk total follower.',
+  fn: (tt_daily, tt_prev) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    const valid = (r) => Number(r.total_followers_count) > 0 && (Number(r.video_views) > 0 || Number(r.profile_views) > 0);
+    const one = (rows) => {
+      const s = (k) => rows.reduce((t, r) => t + (Number(r[k]) || 0), 0);
+      const v = rows.filter(valid).sort((a, b) => (a.date < b.date ? -1 : 1));
+      return {
+        video_views: s('video_views'), likes: s('likes'), comments: s('comments'), shares: s('shares'),
+        profile_views: s('profile_views'), bio_link_clicks: s('bio_link_clicks'), new_followers: s('followers_count'),
+        followers: v.length ? Number(v[v.length - 1].total_followers_count) : null,
+        followers_start: v.length ? Number(v[0].total_followers_count) - (Number(v[0].followers_count) || 0) : null,
+      };
+    };
+    const agg = (rows) => {
+      const by = {};
+      for (const r of rows) (by[r.account_name] = by[r.account_name] || []).push(r);
+      const m = {}, sums = {};
+      for (const a of Object.keys(by)) {
+        m[a] = one(by[a]);
+        for (const g of ['Semua akun', 'Brand ' + (BRAND[a] || 'Lainnya')]) {
+          const o = (sums[g] = sums[g] || {});
+          for (const [k, x] of Object.entries(m[a])) o[k] = (o[k] || 0) + (x || 0);
+        }
+      }
+      return Object.assign(m, sums);
+    };
+    const cur = agg(tt_daily), prev = agg(tt_prev);
+    const div = (a, b) => (a != null && b ? a / b : null);
+    const chg = (a, b) => (a != null && b ? (a - b) / b : null);
+    const pp = (a, b) => (a == null || b == null ? null : a - b);
+    const rates = (o) => {
+      const i = o.likes + o.comments + o.shares;
+      return { interactions: i, er: div(i, o.video_views), sr: div(o.shares, o.video_views), pvr: div(o.profile_views, o.video_views), fcr: div(o.new_followers, o.profile_views), fgr: div(o.new_followers, o.followers_start) };
+    };
+    return Object.keys(cur).map((account) => {
+      const c = cur[account], p = prev[account], rc = rates(c), rp = p ? rates(p) : {};
+      return {
+        account, video_views: c.video_views, likes: c.likes, comments: c.comments, shares: c.shares,
+        profile_views: c.profile_views, bio_link_clicks: c.bio_link_clicks, new_followers: c.new_followers, followers: c.followers, ...rc,
+        video_views_chg: chg(c.video_views, p && p.video_views), interactions_chg: chg(rc.interactions, rp.interactions),
+        profile_views_chg: chg(c.profile_views, p && p.profile_views), new_followers_chg: chg(c.new_followers, p && p.new_followers),
+        er_chg: pp(rc.er, rp.er), sr_chg: pp(rc.sr, rp.sr), pvr_chg: pp(rc.pvr, rp.pvr), fcr_chg: pp(rc.fcr, rp.fcr), fgr_chg: pp(rc.fgr, rp.fgr),
+      };
+    });
+  },
+});
+
+dash.calc('overview', {
+  inputs: ['ig_sum', 'tt_sum'],
+  title: 'Semua akun IG & TikTok',
+  description: 'Satu baris per akun dari ringkasan Instagram dan TikTok, dengan brand, views, interaksi, ER dan follower.',
+  fn: (ig_sum, tt_sum) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    const own = (r) => r.account !== 'Semua akun' && !String(r.account).startsWith('Brand ');
+    return [
+    ...ig_sum.filter(own).map((r) => ({
+      key: 'ig|' + r.account, brand: BRAND[r.account] || 'Lainnya', platform: 'Instagram', account: r.account, views: r.views, views_chg: r.views_chg,
+      interactions: r.interactions, er: r.er, er_chg: r.er_chg, saves: r.saves, profile_visits: null, bio_link_taps: null,
+      new_followers: r.new_followers, followers: r.followers,
+    })),
+    ...tt_sum.filter(own).map((r) => ({
+      key: 'tt|' + r.account, brand: BRAND[r.account] || 'Lainnya', platform: 'TikTok', account: r.account, views: r.video_views, views_chg: r.video_views_chg,
+      interactions: r.interactions, er: r.er, er_chg: r.er_chg, saves: null, profile_visits: r.profile_views, bio_link_taps: r.bio_link_clicks,
+      new_followers: r.new_followers, followers: r.followers,
+    })),
+    ];
+  },
+});
+
+dash.calc('ig_trend', {
+  inputs: ['ig_daily'],
+  title: 'Instagram per hari',
+  description: 'Views, interaksi dan ER per hari, per akun, per brand dan untuk semua akun.',
+  fn: (ig_daily) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    const m = {};
+    for (const r of ig_daily) for (const a of [r.account_name, 'Semua akun', 'Brand ' + (BRAND[r.account_name] || 'Lainnya')]) {
+      const d = String(r.date).slice(0, 10), k = d + '|' + a;
+      const o = (m[k] = m[k] || { key: k, date: d, account: a, views: 0, interactions: 0 });
+      o.views += Number(r.views) || 0;
+      o.interactions += Number(r.total_interactions) || 0;
+    }
+    return Object.values(m).map((o) => ({ ...o, er: o.views ? o.interactions / o.views : null }));
+  },
+});
+
+dash.calc('tt_trend', {
+  inputs: ['tt_daily'],
+  title: 'TikTok per hari',
+  description: 'Video views, interaction dan ER per hari, per akun, per brand dan untuk semua akun; hari yang belum dikirim TikTok dilewati.',
+  fn: (tt_daily) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    const m = {};
+    for (const r of tt_daily) {
+      if (!(Number(r.total_followers_count) > 0 && (Number(r.video_views) > 0 || Number(r.profile_views) > 0))) continue;
+      for (const a of [r.account_name, 'Semua akun', 'Brand ' + (BRAND[r.account_name] || 'Lainnya')]) {
+        const d = String(r.date).slice(0, 10), k = d + '|' + a;
+        const o = (m[k] = m[k] || { key: k, date: d, account: a, views: 0, interactions: 0 });
+        o.views += Number(r.video_views) || 0;
+        o.interactions += (Number(r.likes) || 0) + (Number(r.comments) || 0) + (Number(r.shares) || 0);
+      }
+    }
+    return Object.values(m).map((o) => ({ ...o, er: o.views ? o.interactions / o.views : null }));
+  },
+});
+
+dash.calc('ig_content', {
+  inputs: ['ig_media'],
+  title: 'Konten Instagram',
+  description: 'Setiap post Instagram di periode terpilih, dengan ER (interaksi ÷ views), save+share rate, likes, comments dan link taps (aksi profil).',
+  fn: (ig_media) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    return ig_media.map((r) => {
+    const v = Number(r.media_views) || 0;
+    return {
+      media_id: String(r.media_id), date: String(r.date).slice(0, 10), account_name: r.account_name, brand: BRAND[r.account_name] || 'Lainnya', media_type: r.media_type,
+      media_caption: r.media_caption || '', media_permalink: r.media_permalink, media_views: r.media_views, media_reach: r.media_reach,
+      media_engagement: r.media_engagement, er: v ? (Number(r.media_engagement) || 0) / v : null,
+      media_saved: r.media_saved, media_shares: r.media_shares,
+      ssr: v ? ((Number(r.media_saved) || 0) + (Number(r.media_shares) || 0)) / v : null, media_follows: r.media_follows,
+      likes: Math.max(Number(r.media_total_like_count) || 0, Number(r.media_like_count) || 0),
+      comments: Math.max(Number(r.media_total_comments_count) || 0, Number(r.media_comments_count) || 0),
+      link_taps: r.media_profile_activity == null ? null : Number(r.media_profile_activity),
+    };
+    });
+  },
+});
+
+dash.calc('tt_content', {
+  inputs: ['tt_videos'],
+  title: 'Konten TikTok',
+  description: 'Setiap video TikTok di periode terpilih, dengan interaction (likes + comments + shares) dan ER.',
+  fn: (tt_videos) => {
+    const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
+    return tt_videos.map((r) => {
+    const v = Number(r.video_views_count) || 0;
+    const i = (Number(r.video_likes) || 0) + (Number(r.video_comments) || 0) + (Number(r.video_shares) || 0);
+    return {
+      video_id: String(r.video_id), date: String(r.date).slice(0, 10), account_name: r.account_name, brand: BRAND[r.account_name] || 'Lainnya', video_caption: r.video_caption || '',
+      video_share_url: r.video_share_url, video_views_count: r.video_views_count, video_reach: r.video_reach,
+      video_likes: r.video_likes, video_comments: r.video_comments, video_shares: r.video_shares, video_favorites: r.video_favorites,
+      interactions: i, er: v ? i / v : null, video_new_followers: r.video_new_followers, video_full_watched_rate: r.video_full_watched_rate,
+      likes: r.video_likes, comments: r.video_comments,
+    };
+    });
+  },
+});
+
+/* ---------- formatting & helpers ---------- */
+const fmtN = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 });
+const fmtP = new Intl.NumberFormat('id-ID', { style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtChg = new Intl.NumberFormat('id-ID', { style: 'percent', maximumFractionDigits: 1, signDisplay: 'exceptZero' });
+const fmtPP = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: 'exceptZero' });
+const fmtC = new Intl.NumberFormat('id-ID', { notation: 'compact', maximumFractionDigits: 1 });
+const fmtD = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+const fmtDY = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const ok = (v) => v != null && isFinite(v);
+const F = {
+  count: (v) => (ok(v) ? fmtN.format(v) : '—'),
+  rate: (v) => (ok(v) ? fmtP.format(v) : '—'),
+  chg: (v) => (ok(v) ? fmtChg.format(v) : '—'),
+  pp: (v) => (ok(v) ? fmtPP.format(v * 100) + ' pp' : '—'),
+};
+const toDate = (s) => new Date(String(s).slice(0, 10) + 'T00:00:00Z');
+const ymd = (d) => d.toISOString().slice(0, 10);
+const addDays = (s, n) => { const d = toDate(s); d.setUTCDate(d.getUTCDate() + n); return ymd(d); };
+const dayCount = (a, b) => Math.round((toDate(b) - toDate(a)) / 864e5) + 1;
+const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
+const yesterday = () => {
+  const t = new Date();
+  t.setDate(t.getDate() - 1);
+  return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0');
+};
+const isFail = (s) => s === 'error' || s === 'connect' || s === 'declined';
+const failNode = () => { const s = document.createElement('span'); s.className = 'sm-fail'; s.textContent = 'Data gagal dimuat'; return s; };
+const mark = (el, src, field, acc) => { el.dataset.source = src; el.dataset.field = field; el.dataset.where = 'account=' + enc(acc); };
+const unmark = (el) => { delete el.dataset.source; delete el.dataset.field; delete el.dataset.where; };
+
+/* Konten mengikuti periode yang dipilih (c_start/c_end = tanggal mulai/akhir). */
+const setRange = (start, end) => {
+  const pe = addDays(start, -1);
+  dash.setParams({ start, end, prev_start: addDays(pe, -(dayCount(start, end) - 1)), prev_end: pe, c_start: start, c_end: end });
+};
+const setDefaults = () => { const e = yesterday(); dash.setParams({ platform: 'all', brand: 'all', account: 'all' }); setRange(addDays(e, -6), e); };
+setDefaults();
+
+/* ---------- cards ---------- */
+const IG_CARDS = [
+  { f: 'views', l: 'Views', t: 'count', c: 'views_chg', ct: 'chg', d: 'Total tayangan konten.', i: 'Jumlah tayangan semua konten akun (feed, Reels, Stories) di periode, dijumlahkan dari data harian Instagram. Satu orang dapat menonton lebih dari sekali, sehingga angka ini lebih besar dari reach. Perubahan % = (periode ini − periode sebelumnya) ÷ periode sebelumnya.' },
+  { f: 'interactions', l: 'Engagement', t: 'count', c: 'interactions_chg', ct: 'chg', d: 'Likes, comments, saves dan shares.', i: 'Total likes, comments, saves dan shares dari semua konten (total interactions Instagram), dijumlahkan per hari. Kenaikan menunjukkan konten makin memancing respons audiens.' },
+  { f: 'save_share', l: 'Saves & Shares', t: 'count', c: 'save_share_chg', ct: 'chg', d: 'Konten yang disimpan dan dibagikan.', i: 'Jumlah saves + shares di periode. Dua aksi ini sinyal terkuat bagi algoritma Instagram karena menunjukkan konten dianggap berguna atau layak dibagikan.' },
+  { f: 'new_followers', l: 'New Followers', t: 'count', c: 'new_followers_chg', ct: 'chg', d: 'Akun yang mulai mengikuti pada periode ini.', i: 'Jumlah akun yang mulai mengikuti per hari, dijumlahkan dalam periode. Instagram tidak mengurangi unfollow di angka ini dan hanya menyediakan data ini untuk sekitar 30 hari terakhir. Data hari terakhir dapat bernilai 0 karena data belum lengkap.' },
+  { f: 'followers', l: 'Total Followers', t: 'count', c: 'fgr', ct: 'rate', pre: 'Growth rate: ', d: 'Jumlah follower saat ini.', i: 'Jumlah follower akun saat ini (bukan per akhir periode). Untuk brand atau semua akun = jumlah follower akun di dalamnya. Growth = follower baru ÷ follower awal periode (follower sekarang − follower baru).' },
+  { f: 'link_taps', l: 'Contact Taps', t: 'count', c: 'link_taps_chg', ct: 'chg', d: 'Klik tombol telepon, email, pesan dan alamat.', i: 'Klik tombol kontak di profil: telepon, email, kirim pesan dan alamat, dijumlahkan per hari. Klik link di bio tidak termasuk karena sudah tidak disediakan Instagram.' },
+];
+const IG_RATES = [
+  { f: 'er', l: 'Engagement Rate', t: 'rate', c: 'er_chg', ct: 'pp', d: 'Interaksi ÷ views.', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%, dari total periode. Mengukur kualitas konten: dari setiap tayangan, berapa yang direspons. Bandingkan dengan angka akun sendiri dari waktu ke waktu, bukan dengan akun lain.' },
+  { f: 'ssr', l: 'Save & Share Rate', t: 'rate', c: 'ssr_chg', ct: 'pp', d: '(Saves + shares) ÷ views.', i: '(Saves + shares) ÷ views × 100%. Menunjukkan seberapa bernilai konten bagi audiens; biasanya tinggi pada konten edukasi, tips atau before-after.' },
+  { f: 'nfvr', l: 'Non-Follower View Rate', t: 'rate', c: 'nfvr_chg', ct: 'pp', d: 'Views dari non-follower ÷ views.', i: 'Views dari non-follower ÷ total views × 100%. Semakin tinggi, semakin banyak audiens baru yang dijangkau (potensi growth). Apabila sangat tinggi, follower sendiri mungkin jarang melihat konten.' },
+  { f: 'fcr', l: 'Follow Conversion Rate', t: 'rate', c: 'fcr_chg', ct: 'pp', d: 'Follower baru ÷ views non-follower.', i: 'Follower baru ÷ views dari non-follower × 100%. Dari penonton baru, berapa persen yang akhirnya mengikuti. Nilai rendah menunjukkan konten menarik tetapi profil, bio atau feed kurang meyakinkan untuk di-follow.' },
+  { f: 'fgr', l: 'Follower Growth Rate', t: 'rate', c: 'fgr_chg', ct: 'pp', d: 'Follower baru ÷ follower awal periode (perkiraan).', i: 'Follower baru ÷ follower awal periode × 100%. Perkiraan, karena follower awal dihitung mundur dari jumlah follower saat ini dikurangi follower baru.' },
+  { f: 'ctr', l: 'Contact Tap Rate', t: 'rate', c: 'ctr_chg', ct: 'pp', d: 'Contact taps ÷ views.', i: 'Contact taps ÷ views × 100%. Ukuran minat bisnis: seberapa banyak penonton yang menghubungi lewat tombol di profil.' },
+];
+const TT_CARDS = [
+  { f: 'video_views', l: 'Video Views', t: 'count', c: 'video_views_chg', ct: 'chg', d: 'Total tayangan video.', i: 'Total tayangan semua video akun per hari dari TikTok, dijumlahkan dalam periode. Data TikTok biasanya terlambat 1–2 hari. Perubahan % dibanding periode sebelumnya.' },
+  { f: 'interactions', l: 'Engagement', t: 'count', c: 'interactions_chg', ct: 'chg', d: 'Likes + comments + shares.', i: 'Likes + comments + shares dari semua video, dijumlahkan per hari. Kenaikan menunjukkan video makin memancing respons.' },
+  { f: 'profile_views', l: 'Profile Views', t: 'count', c: 'profile_views_chg', ct: 'chg', d: 'Kunjungan ke profil.', i: 'Jumlah kunjungan ke halaman profil TikTok, dijumlahkan per hari. Ini langkah tengah antara menonton video dan follow.' },
+  { f: 'new_followers', l: 'Net New Followers', t: 'count', c: 'new_followers_chg', ct: 'chg', d: 'Follower baru dikurangi yang berhenti mengikuti.', i: 'Follower bersih harian (follower baru dikurangi unfollow), dijumlahkan dalam periode. Bisa minus apabila unfollow lebih banyak.' },
+  { f: 'followers', l: 'Total Followers', t: 'count', c: 'fgr', ct: 'rate', pre: 'Growth rate: ', d: 'Follower pada hari terakhir yang datanya tersedia.', i: 'Total follower pada hari terakhir yang datanya sudah dikirim TikTok. Untuk brand atau semua akun = jumlah semua akun. Growth = follower baru (net) ÷ follower di awal periode.' },
+];
+const TT_RATES = [
+  { f: 'er', l: 'Engagement Rate', t: 'rate', c: 'er_chg', ct: 'pp', d: 'Interaction ÷ video views.', i: 'Engagement (likes + comments + shares) ÷ video views × 100%, dari total periode. Mengukur seberapa banyak penonton yang merespons video. Perubahan dalam poin persen (pp).' },
+  { f: 'sr', l: 'Share Rate', t: 'rate', c: 'sr_chg', ct: 'pp', d: 'Shares ÷ video views.', i: 'Shares ÷ video views × 100%. Share mendorong video tersebar lebih luas di For You Page, jadi rate ini indikator kuat potensi viral.' },
+  { f: 'pvr', l: 'Profile View Rate', t: 'rate', c: 'pvr_chg', ct: 'pp', d: 'Profile views ÷ video views.', i: 'Profile views ÷ video views × 100%. Seberapa banyak penonton yang penasaran dengan akun setelah menonton video.' },
+  { f: 'fcr', l: 'Follow Conversion Rate', t: 'rate', c: 'fcr_chg', ct: 'pp', d: 'Follower baru ÷ profile views.', i: 'Follower baru (net) ÷ profile views × 100%. Dari yang membuka profil, berapa persen yang mengikuti. Nilai rendah menunjukkan bio, foto profil atau isi profil perlu diperbaiki.' },
+];
+const makeCards = (container, cfgs) => cfgs.map((c) => {
+  const card = document.createElement('div'); card.className = 'sm-card';
+  const lab = document.createElement('div'); lab.className = 'sm-kpi-label'; lab.textContent = c.l;
+  if (c.i) { const ib = document.createElement('button'); ib.type = 'button'; ib.className = 'sm-info'; ib.setAttribute('aria-label', 'Cara hitung'); ib.dataset.info = c.i; ib.textContent = '!'; lab.append(ib); }
+  const val = document.createElement('div'); val.className = 'sm-kpi-val dash-skeleton';
+  const chg = document.createElement('div'); chg.className = 'sm-kpi-chg';
+  const pre = document.createElement('span'), numEl = document.createElement('span'), suf = document.createElement('span');
+  chg.append(pre, numEl, suf);
+  const def = document.createElement('div'); def.className = 'sm-def'; def.textContent = c.d;
+  card.append(lab, val, chg, def);
+  container.append(card);
+  return { c, val, pre, numEl, suf };
+});
+const igCards = makeCards(document.getElementById('ig-angka'), IG_CARDS).concat(makeCards(document.getElementById('ig-rate'), IG_RATES));
+const ttCards = makeCards(document.getElementById('tt-angka'), TT_CARDS).concat(makeCards(document.getElementById('tt-rate'), TT_RATES));
+
+const updateCards = (cards, src, acc) => {
+  const ds = dash.data(src);
+  const row = ds.status === 'ok' ? ds.data.find((r) => r.account === acc) : null;
+  for (const k of cards) {
+    const { c, val, pre, numEl, suf } = k;
+    val.classList.toggle('dash-skeleton', ds.status === 'loading');
+    numEl.className = '';
+    if (row) {
+      mark(val, src, c.f, acc);
+      val.textContent = F[c.t](row[c.f]);
+      const v = row[c.c];
+      if (ok(v)) {
+        mark(numEl, src, c.c, acc);
+        numEl.textContent = F[c.ct](v);
+        numEl.className = c.pre ? '' : v > 0 ? 'sm-up' : v < 0 ? 'sm-down' : 'sm-flat';
+        pre.textContent = c.pre || '';
+        suf.textContent = c.pre ? '' : ' dibanding periode sebelumnya';
+      } else {
+        unmark(numEl); numEl.textContent = ''; pre.textContent = ''; suf.textContent = '';
+      }
+    } else {
+      unmark(val); unmark(numEl);
+      numEl.textContent = ''; pre.textContent = ''; suf.textContent = '';
+      val.replaceChildren(isFail(ds.status) ? failNode() : document.createTextNode(ds.status === 'loading' ? '' : '—'));
+    }
+  }
+};
+
+/* ---------- trend chart ---------- */
+const drawTrend = (el, src, acc, p, ci) => {
+  const ds = dash.data(src);
+  el.replaceChildren();
+  el.classList.toggle('dash-skeleton', ds.status === 'loading');
+  if (ds.status === 'loading') return;
+  if (ds.status !== 'ok') { if (isFail(ds.status)) el.append(failNode()); return; }
+  const rows = ds.data.filter((r) => r.account === acc && r.date >= p.start && r.date <= p.end).sort((a, b) => (a.date < b.date ? -1 : 1));
+  if (!rows.length) {
+    const m = document.createElement('p'); m.className = 'sm-note sm-empty'; m.textContent = 'Belum ada data harian untuk filter yang dipilih.';
+    el.append(m); return;
+  }
+  const W = el.clientWidth;
+  if (!W) return;
+  const H = 220, mt = 12, mb = 28, mr = 8;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', H).attr('viewBox', `0 0 ${W} ${H}`);
+  const y = d3.scaleLinear([0, d3.max(rows, (d) => d.views) || 1], [H - mb, mt]).nice();
+  const ticks = y.ticks(4);
+  const probe = svg.append('g');
+  let tw = 0;
+  for (const t of ticks) tw = Math.max(tw, probe.append('text').attr('class', 'sm-tick').text(fmtC.format(t)).node().getComputedTextLength());
+  probe.remove();
+  const ml = Math.ceil(tw) + 10;
+  const x = d3.scaleBand(rows.map((d) => d.date), [ml, W - mr]).paddingInner(0.25).paddingOuter(0.1);
+  const g = svg.append('g');
+  g.selectAll('line').data(ticks).join('line').attr('class', 'sm-gridline')
+    .attr('x1', ml).attr('x2', W - mr).attr('y1', (t) => y(t)).attr('y2', (t) => y(t));
+  g.selectAll('text.yt').data(ticks).join('text').attr('class', 'sm-tick yt').attr('x', ml - 6).attr('y', (t) => y(t))
+    .attr('dy', '0.32em').attr('text-anchor', 'end').text((t) => fmtC.format(t));
+  const bw = Math.min(x.bandwidth(), 32);
+  const bars = g.selectAll('rect.bar').data(rows).join('rect').attr('class', 'bar')
+    .attr('x', (d) => x(d.date) + (x.bandwidth() - bw) / 2).attr('width', bw)
+    .attr('y', (d) => y(d.views)).attr('height', (d) => Math.max(0, y(0) - y(d.views)))
+    .attr('rx', 4).attr('fill', dash.colors[ci]);
+  const every = Math.max(1, Math.ceil(rows.length / Math.max(1, Math.floor((W - ml) / 60))));
+  g.selectAll('text.xt').data(rows.filter((d, i) => i % every === 0)).join('text').attr('class', 'sm-tick xt')
+    .attr('x', (d) => x(d.date) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle')
+    .text((d) => fmtD.format(toDate(d.date)));
+  const tip = document.createElement('div'); tip.className = 'sm-tip'; tip.hidden = true; el.append(tip);
+  const line = (t, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = t; return d; };
+  g.selectAll('rect.hit').data(rows).join('rect').attr('class', 'hit')
+    .attr('x', (d) => x(d.date)).attr('width', x.bandwidth()).attr('y', mt).attr('height', H - mb - mt).attr('fill', 'transparent')
+    .on('pointerenter click', (ev, d) => {
+      bars.attr('opacity', (b) => (b === d ? 1 : 0.45));
+      tip.replaceChildren(line(fmtDY.format(toDate(d.date)), 'sm-tip-d'), line('Views: ' + F.count(d.views)), line('Engagement: ' + F.count(d.interactions)), line('ER: ' + F.rate(d.er)));
+      tip.hidden = false;
+      const cx = x(d.date) + x.bandwidth() / 2, w = tip.offsetWidth;
+      tip.style.left = Math.min(Math.max(0, cx - w / 2), Math.max(0, W - w)) + 'px';
+      tip.style.top = Math.max(0, y(d.views) - tip.offsetHeight - 8) + 'px';
+    })
+    .on('pointerleave', (ev) => { if (ev.pointerType === 'mouse') { bars.attr('opacity', 1); tip.hidden = true; } });
+};
+
+/* ---------- tables ---------- */
+const NUMT = ['count', 'rate', 'chg', 'pp'];
+const setupTable = (table, cols, state) => {
+  const tr = document.createElement('tr');
+  for (const c of cols) {
+    const th = document.createElement('th');
+    if (c.t !== 'link') th.dataset.field = c.sf || c.f;
+    if (c.src) th.dataset.source = c.src;
+    if (NUMT.includes(c.t)) th.className = 'num';
+    if (c.hn) th.classList.add('sm-hn');
+    if (c.t === 'link') th.textContent = c.l;
+    else {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = c.l;
+      b.addEventListener('click', () => {
+        state.dir = state.sort === c.f ? -state.dir : (c.t === 'text' || c.t === 'cap' ? 1 : -1);
+        state.sort = c.f;
+        render();
+      });
+      th.append(b);
+      if (c.i) { const ib = document.createElement('button'); ib.type = 'button'; ib.className = 'sm-info'; ib.setAttribute('aria-label', 'Cara hitung'); ib.dataset.info = c.i; ib.textContent = '!'; th.append(ib); }
+    }
+    tr.append(th);
+  }
+  table.createTHead().append(tr);
+  table.append(document.createElement('tbody'));
+};
+const fillTable = (table, cols, rows, keyField, state, status, selKey) => {
+  cols.forEach((c, i) => table.tHead.rows[0].cells[i].setAttribute('aria-sort', state.sort === c.f ? (state.dir > 0 ? 'ascending' : 'descending') : 'none'));
+  const tb = table.tBodies[0];
+  tb.replaceChildren();
+  if (status !== 'ok') {
+    const td = tb.insertRow().insertCell(); td.colSpan = cols.length;
+    if (status === 'loading') { td.className = 'dash-skeleton'; td.textContent = ' '; }
+    else if (isFail(status)) td.append(failNode());
+    return;
+  }
+  const sorted = rows.slice().sort((a, b) => {
+    const x = a[state.sort], y = b[state.sort];
+    if (x == null && y == null) return 0;
+    if (x == null) return 1;
+    if (y == null) return -1;
+    return (typeof x === 'number' && typeof y === 'number' ? x - y : String(x).localeCompare(String(y))) * state.dir;
+  });
+  if (!sorted.length) {
+    const td = tb.insertRow().insertCell(); td.colSpan = cols.length; td.className = 'sm-empty sm-note';
+    td.textContent = 'Belum ada data untuk filter yang dipilih.';
+    return;
+  }
+  for (const r of sorted) {
+    const tr = tb.insertRow();
+    tr.dataset.key = String(r[keyField]);
+    if (selKey && r[keyField] === selKey) tr.classList.add('sm-sel');
+    for (const c of cols) {
+      const td = tr.insertCell(), v = r[c.f];
+      if (c.hn) td.classList.add('sm-hn');
+      if (c.t === 'link') {
+        if (v) { const a = document.createElement('a'); a.href = v; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'sm-link'; a.textContent = 'Buka ↗'; td.append(a); }
+      } else if (c.t === 'cap') {
+        td.classList.add('sm-cap'); const s = document.createElement('span'); s.textContent = v || ''; td.append(s);
+      } else if (c.t === 'date') td.textContent = v ? fmtDY.format(toDate(v)) : '—';
+      else if (c.t === 'text') td.textContent = v == null ? '—' : String(v);
+      else {
+        td.classList.add('num'); td.textContent = F[c.t](v);
+        if ((c.t === 'chg' || c.t === 'pp') && ok(v)) td.classList.add(v > 0 ? 'sm-up' : v < 0 ? 'sm-down' : 'sm-flat');
+      }
+    }
+  }
+};
+
+const OV_COLS = [
+  { f: 'brand', l: 'Brand', t: 'text', hn: 1 }, { f: 'platform', l: 'Platform', t: 'text' }, { f: 'account', l: 'Akun', t: 'text' },
+  { f: 'views', l: 'Views', t: 'count', i: 'Instagram: total views akun. TikTok: total video views. Dijumlahkan dari data harian pada periode terpilih.' }, { f: 'views_chg', l: 'Δ Views', t: 'chg', hn: 1, i: 'Perubahan views dibandingkan periode sebelumnya dengan durasi sama: (periode ini − periode sebelumnya) ÷ periode sebelumnya.' },
+  { f: 'interactions', l: 'Engagement', t: 'count', hn: 1, i: 'Engagement adalah total interaksi. Instagram: likes, comments, saves dan shares. TikTok: likes, comments dan shares. Dijumlahkan dari data harian.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'er_chg', l: 'Δ ER', t: 'pp', i: 'Perubahan engagement rate dibandingkan periode sebelumnya, dalam poin persentase (pp).' },
+  { f: 'saves', l: 'Saves', t: 'count', hn: 1, i: 'Instagram: jumlah konten disimpan (saves) pada periode, dijumlahkan dari data harian akun. TikTok: tidak disediakan di level akun, sehingga ditampilkan —.' }, { f: 'profile_visits', l: 'Profile Visits', t: 'count', hn: 1, i: 'TikTok: jumlah kunjungan ke profil pada periode. Instagram: sudah tidak disediakan Instagram di level akun, sehingga ditampilkan —.' }, { f: 'bio_link_taps', l: 'Bio Link Taps', t: 'count', hn: 1, i: 'TikTok: jumlah klik link di bio pada periode. Instagram: tidak disediakan Instagram di level akun (klik link bio sudah dihentikan Meta), sehingga ditampilkan —.' },
+  { f: 'new_followers', l: 'New Followers', t: 'count', i: 'Instagram: akun yang mulai mengikuti. TikTok: follower bersih (baru dikurangi yang berhenti mengikuti). Dijumlahkan dalam periode.' }, { f: 'followers', l: 'Total Followers', t: 'count', hn: 1, i: 'Instagram: jumlah follower saat ini. TikTok: jumlah follower pada hari terakhir yang datanya tersedia.' },
+];
+const IG_COLS = [
+  { f: 'date', l: 'Tanggal Posting', t: 'date' }, { f: 'account_name', l: 'Akun', t: 'text' }, { f: 'media_type', l: 'Format', t: 'text', hn: 1 },
+  { f: 'media_caption', l: 'Caption', t: 'cap' }, { f: 'media_views', l: 'Views', t: 'count', i: 'Jumlah tayangan unggahan sejak dipublikasikan.' }, { f: 'media_reach', l: 'Reach', t: 'count', hn: 1, i: 'Jumlah akun unik yang melihat unggahan.' },
+  { f: 'media_engagement', l: 'Engagement', t: 'count', i: 'Likes + comments + saves + shares pada unggahan.' }, { f: 'likes', l: 'Likes', t: 'count', hn: 1, i: 'Jumlah likes pada unggahan, sesuai angka di aplikasi Instagram.' }, { f: 'comments', l: 'Comments', t: 'count', hn: 1, i: 'Jumlah komentar pada unggahan, termasuk balasan.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'media_saved', l: 'Saves', t: 'count', hn: 1, i: 'Jumlah akun unik yang menyimpan unggahan.' },
+  { f: 'media_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah unggahan dibagikan.' }, { f: 'reposts', l: 'Reposts', t: 'count', hn: 1, src: 'ig_reposts', sf: 'media_reposts', i: 'Jumlah unggahan di-repost oleh akun lain. Tersedia untuk akun yang terhubung lewat Facebook Login; selain itu ditampilkan —.' }, { f: 'link_taps', l: 'Link Taps', t: 'count', hn: 1, i: 'Aksi di profil setelah melihat unggahan, seperti tap link bio, telepon, dan rute. Tidak disediakan Instagram untuk Reels.' }, { f: 'ssr', l: 'Save & Share Rate', t: 'rate', hn: 1, i: '(Saves + shares) ÷ views × 100%. Indikator nilai konten bagi audiens.' }, { f: 'media_follows', l: 'Follows', t: 'count', hn: 1, i: 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak tersedia untuk Reels.' },
+  { f: 'media_permalink', l: 'Link', t: 'link' },
+];
+const TT_COLS = [
+  { f: 'date', l: 'Tanggal Posting', t: 'date' }, { f: 'account_name', l: 'Akun', t: 'text' }, { f: 'video_caption', l: 'Caption', t: 'cap' },
+  { f: 'video_views_count', l: 'Views', t: 'count', i: 'Jumlah tayangan video sejak dipublikasikan.' }, { f: 'video_reach', l: 'Reach', t: 'count', hn: 1, i: 'Jumlah penonton unik video. TikTok mengirimkan angka ini 24–48 jam setelah tayangan.' }, { f: 'video_likes', l: 'Likes', t: 'count', hn: 1, i: 'Jumlah likes pada video.' },
+  { f: 'video_comments', l: 'Comments', t: 'count', hn: 1, i: 'Jumlah komentar pada video.' }, { f: 'video_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah video dibagikan.' }, { f: 'video_favorites', l: 'Saves (Favorites)', t: 'count', hn: 1, i: 'Jumlah video ditambahkan ke favorit (disimpan).' },
+  { f: 'interactions', l: 'Engagement', t: 'count', i: 'Likes + comments + shares pada video.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'video_new_followers', l: 'New Followers', t: 'count', i: 'Penonton yang mulai mengikuti akun setelah menonton video.' },
+  { f: 'video_full_watched_rate', l: 'Full Watch Rate', t: 'rate', hn: 1, i: 'Persentase penonton yang menonton video hingga selesai. Indikator kekuatan hook dan alur video.' }, { f: 'video_share_url', l: 'Link', t: 'link' },
+];
+const ovState = { sort: 'views', dir: -1 }, igState = { sort: 'media_views', dir: -1 }, ttState = { sort: 'video_views_count', dir: -1 };
+const ovTable = document.getElementById('tabel-akun'), igTable = document.getElementById('konten-ig'), ttTable = document.getElementById('konten-tt');
+setupTable(ovTable, OV_COLS, ovState);
+setupTable(igTable, IG_COLS, igState);
+setupTable(ttTable, TT_COLS, ttState);
+
+/* ---------- controls ---------- */
+const root = document.querySelector('.sm');
+const platSel = root.querySelector('.sm-platform'), brandSel = root.querySelector('.sm-brand'), accSel = root.querySelector('.sm-account');
+const startIn = root.querySelector('.sm-start'), endIn = root.querySelector('.sm-end');
+const search = root.querySelector('.sm-search'), csortSel = root.querySelector('.sm-csort'), moreBtn = root.querySelector('.sm-more');
+const PAGE = 24;
+let ctab = 'all', cview = 'card', csort = 'views', query = '', limit = PAGE, accSig = '', brandSig = '';
+
+const accOk = (acc, plat, brand, rows) => acc === 'all' || rows.some((r) => r.key.replace('|', ':') === acc
+  && (plat === 'all' || (plat === 'ig') === (r.platform === 'Instagram')) && (brand === 'all' || r.brand === brand));
+const ovNow = () => { const o = dash.data('overview'); return o.status === 'ok' ? o.data : []; };
+
+platSel.addEventListener('change', () => {
+  const p = dash.params(), v = platSel.value, acc = p.account || 'all';
+  dash.setParams({ platform: v, account: accOk(acc, v, p.brand || 'all', ovNow()) ? acc : 'all' });
+});
+brandSel.addEventListener('change', () => {
+  const p = dash.params(), v = brandSel.value || 'all', acc = p.account || 'all';
+  dash.setParams({ brand: v, account: accOk(acc, p.platform || 'all', v, ovNow()) ? acc : 'all' });
+});
+accSel.addEventListener('change', () => dash.setParams({ account: accSel.value || 'all' }));
+const onDate = () => {
+  const s = startIn.value, e = endIn.value;
+  if (!s || !e || !startIn.validity.valid || !endIn.validity.valid || s > e) return;
+  setRange(s, e);
+};
+startIn.addEventListener('change', onDate);
+endIn.addEventListener('change', onDate);
+const showDates = () => { const p = dash.params(); startIn.value = p.start || ''; endIn.value = p.end || ''; };
+startIn.addEventListener('blur', showDates);
+endIn.addEventListener('blur', showDates);
+root.querySelector('.sm-reset').addEventListener('click', () => { dash.resetParams(); setDefaults(); });
+ovTable.addEventListener('click', (ev) => {
+  const tr = ev.target.closest('tr[data-key]');
+  if (!tr) return;
+  const v = tr.dataset.key.replace('|', ':');
+  dash.setParams({ account: dash.params().account === v ? 'all' : v });
+});
+root.querySelectorAll('.sm-tab').forEach((b) => b.addEventListener('click', () => { ctab = b.dataset.tab; limit = PAGE; render(); }));
+root.querySelectorAll('.sm-view').forEach((b) => b.addEventListener('click', () => { cview = b.dataset.view; render(); }));
+csortSel.addEventListener('change', () => {
+  csort = csortSel.value; limit = PAGE;
+  const [a, b] = SORTCOL[csort] || SORTCOL.views;
+  igState.sort = a; igState.dir = 1 * (csort === 'date' ? -1 : -1);
+  ttState.sort = b; ttState.dir = -1;
+  render();
+});
+search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); limit = PAGE; render(); });
+moreBtn.addEventListener('click', () => { limit += PAGE; render(); });
+
+/* ---------- sidebar menu ---------- */
+const shell = document.getElementById('shell');
+const isNarrow = () => window.matchMedia('(max-width: 900px)').matches;
+const menuBtn = root.querySelector('.sm-menubtn');
+const setMenu = (open) => {
+  if (isNarrow()) { shell.classList.toggle('is-open', open); menuBtn.setAttribute('aria-expanded', String(open)); }
+  else { shell.classList.toggle('is-collapsed', !open); setTimeout(render, 50); }
+};
+menuBtn.addEventListener('click', () => setMenu(!shell.classList.contains('is-open')));
+root.querySelector('.sm-collapse').addEventListener('click', () => setMenu(false));
+root.querySelector('.sm-railbtn').addEventListener('click', () => setMenu(true));
+root.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
+  const el = document.getElementById(b.dataset.go);
+  if (!el || el.hidden) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  dash.setLink(b.dataset.go);
+  if (isNarrow()) setMenu(false);
+}));
+
+/* ---------- (!) metric explanations ---------- */
+const pop = document.createElement('div');
+pop.className = 'sm-pop'; pop.hidden = true; pop.setAttribute('role', 'tooltip');
+root.append(pop);
+let popFor = null;
+const hidePop = () => { pop.hidden = true; if (popFor) popFor.setAttribute('aria-expanded', 'false'); popFor = null; };
+root.addEventListener('click', (e) => {
+  const b = e.target.closest('.sm-info');
+  if (!b) { if (!e.target.closest('.sm-pop')) hidePop(); return; }
+  e.preventDefault(); e.stopPropagation();
+  if (popFor === b) { hidePop(); return; }
+  hidePop();
+  pop.textContent = b.dataset.info;
+  pop.hidden = false;
+  popFor = b; b.setAttribute('aria-expanded', 'true');
+  const box = root.getBoundingClientRect(), r = b.getBoundingClientRect(), w = pop.offsetWidth;
+  pop.style.left = Math.max(8, Math.min(box.width - w - 8, r.left - box.left - w / 2 + r.width / 2)) + 'px';
+  pop.style.top = (r.bottom - box.top + 6) + 'px';
+}, true);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hidePop(); });
+
+/* ---------- content cards ---------- */
+const IG_STATS = [
+  ['media_views', 'Views', 'count', 'Jumlah tayangan unggahan sejak dipublikasikan.'],
+  ['media_engagement', 'Engagement', 'count', 'Likes + comments + saves + shares pada unggahan.'],
+  ['er', 'ER', 'rate', 'Engagement rate = engagement (interaksi) ÷ views × 100%.'],
+  ['likes', 'Likes', 'count', 'Jumlah likes pada unggahan, sesuai angka di aplikasi Instagram.'],
+  ['comments', 'Comments', 'count', 'Jumlah komentar pada unggahan, termasuk balasan.'],
+  ['media_shares', 'Shares', 'count', 'Jumlah unggahan dibagikan.'],
+  ['media_saved', 'Saves', 'count', 'Jumlah akun unik yang menyimpan unggahan.'],
+  ['reposts', 'Reposts', 'count', 'Jumlah unggahan di-repost oleh akun lain. Tersedia untuk akun yang terhubung lewat Facebook Login; selain itu ditampilkan —.', { src: 'ig_reposts', sf: 'media_reposts' }],
+  ['link_taps', 'Link Taps', 'count', 'Aksi di profil setelah melihat unggahan, seperti tap link bio, telepon, dan rute. Tidak disediakan Instagram untuk Reels.'],
+  ['media_follows', 'Follows', 'count', 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak disediakan Instagram untuk Reels.'],
+];
+const TT_STATS = [
+  ['video_views_count', 'Views', 'count', 'Jumlah tayangan video sejak dipublikasikan.'],
+  ['interactions', 'Engagement', 'count', 'Likes + comments + shares pada video.'],
+  ['er', 'ER', 'rate', 'Engagement rate = engagement (likes + comments + shares) ÷ views × 100%.'],
+  ['likes', 'Likes', 'count', 'Jumlah likes pada video.'],
+  ['comments', 'Comments', 'count', 'Jumlah komentar pada video.'],
+  ['video_shares', 'Shares', 'count', 'Jumlah video dibagikan.'],
+  ['video_favorites', 'Saves', 'count', 'Jumlah video ditambahkan ke favorit (disimpan).'],
+  ['reposts', 'Reposts', 'count', 'Tidak disediakan TikTok per video, sehingga ditampilkan —.', { na: true }],
+  ['link_taps', 'Link Taps', 'count', 'Tidak disediakan TikTok per video, sehingga ditampilkan —. Klik link bio TikTok tersedia di level akun pada Ringkasan Performa Akun.', { na: true }],
+  ['video_new_followers', 'New Followers', 'count', 'Penonton yang mulai mengikuti akun setelah menonton video.'],
+];
+const TYPE = { REELS: 'Reels', CAROUSEL_ALBUM: 'Carousel', IMAGE: 'Foto', VIDEO: 'Video' };
+const postCard = (it) => {
+  const r = it.row, ig = it.pf === 'ig';
+  const src = ig ? 'ig_content' : 'tt_content', key = ig ? 'media_id' : 'video_id';
+  const where = key + '=' + enc(r[key]);
+  const card = document.createElement('article'); card.className = 'sm-post';
+  const top = document.createElement('div'); top.className = 'sm-post-top';
+  const acc = document.createElement('span'); acc.className = 'sm-post-acc'; acc.textContent = r.account_name;
+  const badge = document.createElement('span'); badge.className = 'sm-badge'; badge.textContent = ig ? 'Instagram' : 'TikTok';
+  top.append(acc, badge);
+  const meta = document.createElement('div'); meta.className = 'sm-post-meta';
+  meta.textContent = fmtDY.format(toDate(r.date)) + ' · ' + (ig ? (TYPE[r.media_type] || r.media_type || 'Post') : 'Video') + ' · ' + r.brand;
+  const cap = document.createElement('div'); cap.className = 'sm-post-cap';
+  cap.textContent = (ig ? r.media_caption : r.video_caption) || '(tanpa caption)';
+  const stats = document.createElement('div'); stats.className = 'sm-post-stats';
+  for (const [f, l, t, info, opt = {}] of ig ? IG_STATS : TT_STATS) {
+    const box = document.createElement('div');
+    const lab = document.createElement('div'); lab.className = 'sm-stat-l'; lab.textContent = l;
+    const ib = document.createElement('button'); ib.type = 'button'; ib.className = 'sm-info'; ib.setAttribute('aria-label', 'Cara hitung'); ib.dataset.info = info; ib.textContent = '!'; lab.append(ib);
+    const val = document.createElement('div'); val.className = 'sm-stat-v';
+    let v = r[f];
+    if (opt.src) {
+      v = repostMap ? repostMap.get(String(r[key])) : undefined;
+      if (v != null) { val.dataset.source = opt.src; val.dataset.field = opt.sf; val.dataset.where = where; }
+    } else if (!opt.na) { val.dataset.source = src; val.dataset.field = f; val.dataset.where = where; }
+    val.textContent = opt.na ? '—' : F[t](v);
+    box.append(lab, val); stats.append(box);
+  }
+  const foot = document.createElement('div'); foot.className = 'sm-post-link';
+  const url = ig ? r.media_permalink : r.video_share_url;
+  if (url) { const a = document.createElement('a'); a.className = 'sm-link'; a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = ig ? 'Lihat di Instagram ↗' : 'Lihat di TikTok ↗'; foot.append(a); }
+  card.append(top, meta, cap, stats, foot);
+  return card;
+};
+/* Urutan konten per tahap funnel: [kolom Instagram, kolom TikTok] */
+const SORTCOL = {
+  views: ['media_views', 'video_views_count'], reach: ['media_reach', 'video_reach'],
+  inter: ['media_engagement', 'interactions'], er: ['er', 'er'], saves: ['media_saved', 'video_favorites'], shares: ['media_shares', 'video_shares'],
+  link: ['link_taps', 'link_taps'], follows: ['media_follows', 'video_new_followers'], date: ['date', 'date'],
+};
+const SORTKEY = Object.fromEntries(Object.entries(SORTCOL).map(([k, [a, b]]) => [k, (it) => (it.pf === 'ig' ? it.row[a] : it.row[b])]));
+let repostMap = null;
+
+/* ---------- render ---------- */
+function render() {
+  const p = dash.params();
+  const plat = p.platform || 'all', brand = p.brand || 'all', acc = p.account || 'all';
+  platSel.value = plat;
+  if (document.activeElement !== startIn && document.activeElement !== endIn) showDates();
+
+  const ov = dash.data('overview');
+  const ovRows = ov.status === 'ok' ? ov.data : [];
+
+  // brand options
+  const brands = [...new Set(ovRows.map((r) => r.brand))].sort();
+  const bsig = brands.join(',');
+  if (bsig !== brandSig || brandSel.value !== brand) {
+    brandSig = bsig;
+    const opts = [new Option('Semua brand', 'all'), ...brands.map((b) => new Option(b, b))];
+    if (brand !== 'all' && !brands.includes(brand)) opts.push(new Option(brand, brand));
+    brandSel.replaceChildren(...opts);
+    brandSel.value = brand;
+  }
+
+  const ovShown = ovRows.filter((r) => (plat === 'all' || (plat === 'ig' ? r.platform === 'Instagram' : r.platform === 'TikTok')) && (brand === 'all' || r.brand === brand));
+
+  const sig = plat + '#' + brand + '#' + ovShown.map((r) => r.key).join(',');
+  if (sig !== accSig || accSel.value !== acc) {
+    accSig = sig;
+    const opts = [new Option('Semua akun', 'all')];
+    for (const name of ['Instagram', 'TikTok']) {
+      const rs = ovShown.filter((r) => r.platform === name);
+      if (!rs.length) continue;
+      const og = document.createElement('optgroup'); og.label = name;
+      for (const r of rs) og.append(new Option(r.account, r.key.replace('|', ':')));
+      opts.push(og);
+    }
+    if (acc !== 'all' && !ovShown.some((r) => r.key.replace('|', ':') === acc)) opts.push(new Option(acc.slice(3), acc));
+    accSel.replaceChildren(...opts);
+    accSel.value = acc;
+  }
+
+  const hasPf = (name) => ov.status !== 'ok' || brand === 'all' || ovRows.some((r) => r.brand === brand && r.platform === name);
+  const showIG = plat !== 'tt' && !acc.startsWith('tt:') && hasPf('Instagram');
+  const showTT = plat !== 'ig' && !acc.startsWith('ig:') && hasPf('TikTok');
+  const groupKey = brand === 'all' ? 'Semua akun' : 'Brand ' + brand;
+  const igAcc = acc.startsWith('ig:') ? acc.slice(3) : groupKey;
+  const ttAcc = acc.startsWith('tt:') ? acc.slice(3) : groupKey;
+  const label = (k) => '· ' + (k === 'Semua akun' ? 'semua akun' : k.startsWith('Brand ') ? 'brand ' + k.slice(6) : k);
+  document.getElementById('instagram').hidden = !showIG;
+  document.getElementById('tiktok').hidden = !showTT;
+  root.querySelector('.sm-ig-label').textContent = label(igAcc);
+  root.querySelector('.sm-tt-label').textContent = label(ttAcc);
+
+  updateCards(igCards, 'ig_sum', igAcc);
+  updateCards(ttCards, 'tt_sum', ttAcc);
+  if (showIG) drawTrend(document.getElementById('ig-tren'), 'ig_trend', igAcc, p, 0);
+  if (showTT) drawTrend(document.getElementById('tt-tren'), 'tt_trend', ttAcc, p, 1);
+
+  fillTable(ovTable, OV_COLS, ovShown, 'key', ovState, ov.status, acc === 'all' ? null : acc.replace(':', '|'));
+
+  // takeaway
+  const per = root.querySelector('.sm-period'), best = root.querySelector('.sm-best');
+  per.textContent = p.start && p.end
+    ? fmtDY.format(toDate(p.start)) + ' – ' + fmtDY.format(toDate(p.end)) + ', dibandingkan dengan ' + fmtDY.format(toDate(p.prev_start)) + ' – ' + fmtDY.format(toDate(p.prev_end)) + '. '
+    : '';
+  best.replaceChildren();
+  const cand = ovShown.filter((r) => ok(r.er) && r.views >= 1000).sort((a, b) => b.er - a.er)[0];
+  if (cand) {
+    const v = document.createElement('b');
+    v.dataset.source = 'overview'; v.dataset.field = 'er'; v.dataset.where = 'key=' + enc(cand.key);
+    v.textContent = F.rate(cand.er);
+    best.append('Engagement rate tertinggi: ' + cand.account + ' (' + cand.platform + ') sebesar ', v, '.');
+  }
+
+  // content
+  root.querySelector('.sm-c-label').textContent = p.c_start && p.c_end ? '· ' + fmtDY.format(toDate(p.c_start)) + ' – ' + fmtDY.format(toDate(p.c_end)) : '';
+  if (ctab === 'ig' && !showIG) ctab = 'all';
+  if (ctab === 'tt' && !showTT) ctab = 'all';
+  document.getElementById('tab-ig').hidden = !showIG;
+  document.getElementById('tab-tt').hidden = !showTT;
+  root.querySelectorAll('.sm-tab').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tab === ctab)));
+  root.querySelectorAll('.sm-view').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === cview)));
+  csortSel.value = csort;
+  const wantIG = showIG && ctab !== 'tt', wantTT = showTT && ctab !== 'ig';
+  const igPick = (r) => (acc.startsWith('ig:') ? r.account_name === igAcc : brand === 'all' || r.brand === brand);
+  const ttPick = (r) => (acc.startsWith('tt:') ? r.account_name === ttAcc : brand === 'all' || r.brand === brand);
+  const hit = (r, cap) => !query || String(r[cap] || '').toLowerCase().includes(query) || String(r.account_name || '').toLowerCase().includes(query);
+  const ic = dash.data('ig_content'), tc = dash.data('tt_content');
+  const rp = dash.data('ig_reposts');
+  repostMap = rp.status === 'ok' ? new Map(rp.data.map((x) => [String(x.media_id), x.media_reposts])) : null;
+  const igRows = wantIG && ic.status === 'ok' ? ic.data.filter((r) => igPick(r) && hit(r, 'media_caption'))
+    .map((r) => ({ ...r, reposts: repostMap ? (repostMap.get(String(r.media_id)) ?? null) : null })) : [];
+  const ttRows = wantTT && tc.status === 'ok' ? tc.data.filter((r) => ttPick(r) && hit(r, 'video_caption')) : [];
+
+  document.getElementById('konten-kartu').hidden = cview !== 'card';
+  document.getElementById('konten-tabel').hidden = cview !== 'table';
+  const gal = document.getElementById('galeri');
+  gal.replaceChildren();
+  moreBtn.hidden = true;
+  if (cview === 'card') {
+    const loading = (wantIG && ic.status === 'loading') || (wantTT && tc.status === 'loading');
+    const failed = (wantIG && isFail(ic.status)) || (wantTT && isFail(tc.status));
+    const items = [...igRows.map((row) => ({ pf: 'ig', row })), ...ttRows.map((row) => ({ pf: 'tt', row }))];
+    const sk = SORTKEY[csort];
+    items.sort((a, b) => {
+      const x = sk(a), y = sk(b);
+      if (x == null && y == null) return 0;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      return csort === 'date' ? String(y).localeCompare(String(x)) : y - x;
+    });
+    if (!items.length) {
+      const m = document.createElement('p'); m.className = 'sm-note sm-empty';
+      if (loading) { m.className = 'dash-skeleton'; m.textContent = ' '; }
+      else if (failed) m.append(failNode());
+      else m.textContent = 'Belum ada konten untuk filter yang dipilih.';
+      gal.append(m);
+    } else {
+      for (const it of items.slice(0, limit)) gal.append(postCard(it));
+      moreBtn.hidden = items.length <= limit;
+    }
+  } else {
+    document.getElementById('konten-ig-card').hidden = !wantIG;
+    document.getElementById('konten-tt-card').hidden = !wantTT;
+    if (wantIG) fillTable(igTable, IG_COLS, igRows, 'media_id', igState, ic.status);
+    if (wantTT) fillTable(ttTable, TT_COLS, ttRows, 'video_id', ttState, tc.status);
+  }
+}
+
+/* ---------- Export Excel (mengikuti filter aktif) ---------- */
+const exportBtn = root.querySelector('.sm-export');
+const exportLabel = exportBtn.textContent;
+const flash = (t) => { exportBtn.textContent = t; setTimeout(() => { exportBtn.textContent = exportLabel; }, 3500); };
+const cellOf = (t, v) => (t === 'pp' ? (ok(v) ? +(v * 100).toFixed(4) : null) : v);
+const typeOf = (t) => ({ count: 'int', rate: 'pct', chg: 'pct', pp: 'num', date: 'text', text: 'text', cap: 'text', link: 'text' }[t] || 'text');
+const headOf = (c) => (c.t === 'pp' ? c.l + ' (pp)' : c.l);
+function buildExport() {
+  const p = dash.params();
+  const plat = p.platform || 'all', brand = p.brand || 'all', acc = p.account || 'all';
+  const ovAll = (dash.data('overview').data || []);
+  const hasPf = (name) => brand === 'all' || ovAll.some((r) => r.brand === brand && r.platform === name);
+  const showIG = plat !== 'tt' && !acc.startsWith('tt:') && hasPf('Instagram');
+  const showTT = plat !== 'ig' && !acc.startsWith('ig:') && hasPf('TikTok');
+  const groupKey = brand === 'all' ? 'Semua akun' : 'Brand ' + brand;
+  const igAcc = acc.startsWith('ig:') ? acc.slice(3) : groupKey;
+  const ttAcc = acc.startsWith('tt:') ? acc.slice(3) : groupKey;
+  const inRange = (d) => d >= p.start && d <= p.end;
+  const hit = (r, cap) => !query || String(r[cap] || '').toLowerCase().includes(query) || String(r.account_name || '').toLowerCase().includes(query);
+  const fmtRange = (a, b) => (a && b ? fmtDY.format(toDate(a)) + ' – ' + fmtDY.format(toDate(b)) : '');
+  const sheets = [];
+  sheets.push({ name: 'Filter', header: ['Filter', 'Pilihan'], rows: [
+    ['Periode', fmtRange(p.start, p.end)],
+    ['Periode pembanding', fmtRange(p.prev_start, p.prev_end)],
+    ['Platform', plat === 'all' ? 'Semua platform' : plat === 'ig' ? 'Instagram' : 'TikTok'],
+    ['Brand', brand === 'all' ? 'Semua brand' : brand],
+    ['Akun', acc === 'all' ? 'Semua akun' : acc.slice(3)],
+    ['Pencarian konten', query || '—'],
+    ['Diekspor', new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date())],
+  ] });
+  const ovRows = ovAll.filter((r) => (plat === 'all' || (plat === 'ig' ? r.platform === 'Instagram' : r.platform === 'TikTok'))
+    && (brand === 'all' || r.brand === brand) && (acc === 'all' || r.key === acc.replace(':', '|')));
+  sheets.push({ name: 'Ringkasan Akun', header: OV_COLS.map(headOf), types: OV_COLS.map((c) => typeOf(c.t)),
+    rows: ovRows.slice().sort((a, b) => (b.views || 0) - (a.views || 0)).map((r) => OV_COLS.map((c) => cellOf(c.t, r[c.f]))) });
+  const kpiSheet = (name, src, key, cfgs) => {
+    const row = (dash.data(src).data || []).find((r) => r.account === key);
+    if (!row) return null;
+    return { name, header: ['Metrik', 'Nilai', 'Perubahan vs periode sebelumnya', 'Satuan perubahan', 'Keterangan'],
+      types: ['text', 'num', 'num', 'text', 'text'],
+      rows: cfgs.map((c) => {
+        const v = row[c.f], d = row[c.c];
+        const val = { v: ok(v) ? v : null, t: c.t === 'rate' ? 'pct' : 'int' };
+        const chg = c.pre ? { v: ok(d) ? d : null, t: 'pct' } : c.ct === 'pp' ? { v: ok(d) ? +(d * 100).toFixed(4) : null, t: 'num' } : { v: ok(d) ? d : null, t: 'pct' };
+        const unit = c.pre ? 'Growth rate' : c.ct === 'pp' ? 'poin persentase' : 'persen';
+        return [c.l, val, chg, ok(d) ? unit : '', c.d];
+      }) };
+  };
+  const trendSheet = (name, src, key) => ({ name, header: ['Tanggal', 'Views', 'Engagement', 'Engagement Rate'], types: ['text', 'int', 'int', 'pct'],
+    rows: (dash.data(src).data || []).filter((r) => r.account === key && inRange(r.date)).sort((a, b) => (a.date < b.date ? -1 : 1))
+      .map((r) => [r.date, r.views, r.interactions, r.er]) });
+  const rpx = dash.data('ig_reposts');
+  const rmap = rpx.status === 'ok' ? new Map(rpx.data.map((x) => [String(x.media_id), x.media_reposts])) : null;
+  const withReposts = (r) => (r.media_id ? { ...r, reposts: rmap ? (rmap.get(String(r.media_id)) ?? null) : null } : r);
+  const contentSheet = (name, src, cols, pick, cap) => ({ name, header: cols.map(headOf).concat('Brand'), types: cols.map((c) => typeOf(c.t)).concat('text'),
+    rows: (dash.data(src).data || []).filter((r) => pick(r) && hit(r, cap)).map(withReposts).sort((a, b) => (a.date < b.date ? 1 : -1))
+      .map((r) => cols.map((c) => cellOf(c.t, r[c.f])).concat(r.brand)) });
+  const label = (k) => (k === 'Semua akun' ? 'Semua akun' : k.startsWith('Brand ') ? 'Brand ' + k.slice(6) : k);
+  if (showIG) {
+    sheets.push(kpiSheet('Instagram KPI', 'ig_sum', igAcc, IG_CARDS.concat(IG_RATES)));
+    sheets.push(trendSheet('Instagram Harian', 'ig_trend', igAcc));
+    sheets.push(contentSheet('Konten Instagram', 'ig_content', IG_COLS,
+      (r) => (acc.startsWith('ig:') ? r.account_name === igAcc : brand === 'all' || r.brand === brand), 'media_caption'));
+  }
+  if (showTT) {
+    sheets.push(kpiSheet('TikTok KPI', 'tt_sum', ttAcc, TT_CARDS.concat(TT_RATES)));
+    sheets.push(trendSheet('TikTok Harian', 'tt_trend', ttAcc));
+    sheets.push(contentSheet('Konten TikTok', 'tt_content', TT_COLS,
+      (r) => (acc.startsWith('tt:') ? r.account_name === ttAcc : brand === 'all' || r.brand === brand), 'video_caption'));
+  }
+  sheets[0].rows.splice(5, 0, ['Cakupan KPI Instagram', showIG ? label(igAcc) : '—'], ['Cakupan KPI TikTok', showTT ? label(ttAcc) : '—']);
+  const slug = (s) => String(s).replace(/[^A-Za-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+  const scope = acc !== 'all' ? acc.slice(3) : brand !== 'all' ? brand : 'Semua-Brand';
+  return { sheets, filename: `Social-Media-Performance_${slug(scope)}_${p.start}_${p.end}.xlsx` };
+}
+exportBtn.addEventListener('click', async () => {
+  const need = ['overview', 'ig_sum', 'tt_sum', 'ig_trend', 'tt_trend', 'ig_content', 'tt_content'];
+  if (need.some((id) => dash.data(id).status === 'loading')) { flash('Data masih dimuat…'); return; }
+  exportBtn.disabled = true;
+  try {
+    const { sheets, filename } = buildExport();
+    const bytes = window.XlsxLite.build(sheets);
+    await window.XlsxLite.save(bytes, filename);
+    flash('File siap ✓');
+  } catch (e) {
+    if (e && e.code === 'declined') flash(exportLabel);
+    else { console.error(e); flash(e && e.code === 'unavailable' ? 'Unduhan tidak tersedia' : 'Export gagal'); }
+  } finally { exportBtn.disabled = false; }
+});
+dash.onData(render);
+const startPlace = document.getElementById(location.hash.slice(1));
+if (startPlace && startPlace.closest('.sm-main')) setTimeout(() => startPlace.scrollIntoView(), 300);
+</script>
+  <script>
+  /* Versi Vercel/GitHub: menu GBP & GSC membuka halaman di situs yang sama, dan waktu update data ditampilkan. */
+  (function () {
+    document.querySelectorAll('.sm-entry a.sm-entry-item').forEach(function (a) {
+      var page = a.href.split('#')[1] || 'gbp';
+      a.href = 'index.html#' + page;
+      a.removeAttribute('target');
+      var en = a.querySelector('.sm-en');
+      if (en) en.textContent = en.textContent.replace(' ↗', '');
+    });
+    fetch('data/social_meta.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !j.updated) return;
+      var el = document.createElement('div'); el.className = 'sm-credit';
+      el.textContent = 'Data diperbarui ' + new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Jakarta' }).format(new Date(j.updated)) + ' WIB';
+      var h = document.querySelector('#header');
+      if (h) h.insertBefore(el, h.querySelector('.sm-take'));
+    }).catch(function () {});
+  })();
+  </script>
+</body>
+</html>
