@@ -12,13 +12,22 @@
   --cds-surface-popover: #ffffff; --cds-border: #dedad2; --cds-shadow-popover: 0 6px 20px rgba(0,0,0,.12); --cds-text-secondary: #6b6862;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-fg: #ecebe7; --color-fg-muted: #a3a09a; --color-bg: #1b1a18; --color-panel: #24231f; --color-border-line: #383631;
     --color-ok: #6cc28a; --color-warn: #e0b04a; --color-bad: #e8796a;
     --cds-chart-grid: #312f2b; --cds-chart-muted: #4a4741; --cds-chart-status-critical: #e8796a;
     --cds-surface-popover: #2c2b27; --cds-border: #45423c; --cds-shadow-popover: 0 6px 20px rgba(0,0,0,.4); --cds-text-secondary: #a3a09a;
   }
 }
+:root[data-theme="dark"] {
+    --color-fg: #ecebe7; --color-fg-muted: #a3a09a; --color-bg: #1b1a18; --color-panel: #24231f; --color-border-line: #383631;
+    --color-ok: #6cc28a; --color-warn: #e0b04a; --color-bad: #e8796a;
+    --cds-chart-grid: #312f2b; --cds-chart-muted: #4a4741; --cds-chart-status-critical: #e8796a;
+    --cds-surface-popover: #2c2b27; --cds-border: #45423c; --cds-shadow-popover: 0 6px 20px rgba(0,0,0,.4); --cds-text-secondary: #a3a09a;
+}
+:root { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); -webkit-text-size-adjust: 100%; }
 #dash-root { padding: var(--dash-gutter, 16px); padding-top: max(var(--dash-gutter, 16px), env(safe-area-inset-top)); padding-bottom: max(var(--dash-gutter, 16px), env(safe-area-inset-bottom)); }
@@ -167,3 +176,14 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 /* ---------- tombol Export Excel ---------- */
 .gb-export { margin-left: auto; font: inherit; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); cursor: pointer; background: var(--color-fg); color: var(--color-bg); border: 1px solid var(--color-fg); border-radius: var(--cds-radius); padding: 8px 14px; min-height: 36px; white-space: nowrap; }
 .gb-export:disabled { opacity: .6; cursor: progress; }
+
+/* ---------- tombol tema Terang / Gelap ---------- */
+.lit-theme { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: var(--cds-font-size-caption); font-weight: var(--cds-font-weight-medium); cursor: pointer; background: var(--color-panel); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 6px 12px; min-height: 36px; white-space: nowrap; flex: 0 0 auto; }
+.lit-theme:hover { border-color: var(--color-fg-muted); }
+.lit-theme-ic { font-size: 15px; line-height: 1; }
+.gb-herorow .lit-theme { margin-left: auto; }
+.gb-herorow .gb-export ~ .lit-theme { margin-left: 0; }
+.lit-titlerow { display: flex; align-items: center; gap: var(--cds-gap-sm); flex-wrap: wrap; }
+.lit-titlerow .lit-theme { margin-left: auto; }
+.lit-theme-float { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 12px; z-index: 50; }
+@media (max-width: 640px) { .lit-theme-tx { display: none; } .lit-theme { padding: 6px 10px; } .gb-herorow { flex-wrap: wrap; } }
