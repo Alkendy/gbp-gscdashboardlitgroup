@@ -30,10 +30,10 @@
     if (!btn) return;
     var dark = current() === 'dark';
     btn.setAttribute('aria-pressed', String(dark));
-    btn.setAttribute('aria-label', dark ? 'Ganti ke tema terang' : 'Ganti ke tema gelap');
+   btn.setAttribute('aria-label', dark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
     btn.title = btn.getAttribute('aria-label');
     btn.querySelector('.lit-theme-ic').textContent = dark ? '☾' : '☀';
-    btn.querySelector('.lit-theme-tx').textContent = dark ? 'Gelap' : 'Terang';
+   btn.querySelector('.lit-theme-tx').textContent = dark ? 'Dark Mode' : 'Light Mode';
   }
   function mount() {
     btn = document.createElement('button');
