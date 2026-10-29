@@ -18,11 +18,17 @@ BASE = "https://connectors.windsor.ai/"
 DAILY_DAYS = 200     # cukup untuk rentang 90 hari + periode pembanding
 CONTENT_DAYS = 200   # konten mengikuti periode yang dipilih (maks. 200 hari terakhir)
 CHUNK_DAYS = 30
+# 7 akun Instagram brand. Metrik reposts hanya diminta untuk akun ini, karena akun lain
+# yang terhubung lewat Instagram Login menolak metrik tersebut dan menggagalkan permintaan.
+IG_BRAND_ACCOUNTS = ["17841472235543472", "17841409041073365", "17841417472095288", "17841408215311134",
+                     "17841404885296412", "29927397900183405", "17841465346877130"]
 OUT = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
-def call(connector, fields, date_from=None, date_to=None):
+def call(connector, fields, date_from=None, date_to=None, extra=None):
     q = {"api_key": KEY, "fields": ",".join(fields)}
+    if extra:
+        q.update(extra)
     if date_from:
         q["date_from"], q["date_to"] = date_from, date_to
     url = BASE + connector + "?" + urllib.parse.urlencode(q)
@@ -47,14 +53,14 @@ def call(connector, fields, date_from=None, date_to=None):
     raise RuntimeError(f"{label}: gagal setelah 4 percobaan")
 
 
-def fetch_range(connector, fields, start, end, tolerant=False):
+def fetch_range(connector, fields, start, end, tolerant=False, extra=None):
     """tolerant=True: periode 30 hari yang ditolak dilewati (mis. metrik yang hanya
     disediakan Instagram untuk 30 hari terakhir), periode lain tetap diambil."""
     rows, cur, ok = [], start, 0
     while cur <= end:
         stop = min(cur + dt.timedelta(days=CHUNK_DAYS - 1), end)
         try:
-            rows += call(connector, fields, cur.isoformat(), stop.isoformat())
+            rows += call(connector, fields, cur.isoformat(), stop.isoformat(), extra)
             ok += 1
         except Exception as e:  # noqa: BLE001
             if not tolerant:
@@ -113,9 +119,13 @@ def main():
         ("social_ig_profile", lambda: call("instagram", ["account_name", "account_id", "followers_count", "media_count"])),
         ("social_ig_media", lambda: fetch_range("instagram", ["date", "account_name", "media_id", "media_permalink", "media_type",
                                                               "media_caption", "media_views", "media_reach", "media_engagement",
-                                                              "media_saved", "media_shares", "media_follows"], c_from, today)),
+                                                              "media_like_count", "media_comments_count", "media_total_like_count",
+                                                              "media_total_comments_count", "media_saved", "media_shares",
+                                                              "media_profile_activity", "media_follows"], c_from, today)),
+        ("social_ig_reposts", lambda: fetch_range("instagram", ["date", "account_name", "media_id", "media_reposts"], c_from, today,
+                                                  tolerant=True, extra={"select_accounts": ",".join(IG_BRAND_ACCOUNTS)})),
         ("social_tt_daily", lambda: fetch_range("tiktok_organic", ["date", "account_name", "video_views", "likes", "comments",
-                                                                   "shares", "profile_views", "followers_count",
+                                                                   "shares", "profile_views", "bio_link_clicks", "followers_count",
                                                                    "total_followers_count"], d_from, today)),
         ("social_tt_videos", lambda: fetch_range("tiktok_organic", ["date", "account_name", "video_id", "video_caption",
                                                                     "video_share_url", "video_views_count", "video_reach",

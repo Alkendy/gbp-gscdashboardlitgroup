@@ -4,11 +4,11 @@
 (function () {
   const FILES = {
     ig_daily: 'social_ig_daily', ig_prev: 'social_ig_daily', ig_profile: 'social_ig_profile', ig_media: 'social_ig_media',
-    tt_daily: 'social_tt_daily', tt_prev: 'social_tt_daily', tt_videos: 'social_tt_videos',
+    tt_daily: 'social_tt_daily', tt_prev: 'social_tt_daily', tt_videos: 'social_tt_videos', ig_reposts: 'social_ig_reposts',
   };
   const RANGE = {
     ig_daily: ['start', 'end'], ig_prev: ['prev_start', 'prev_end'], ig_media: ['c_start', 'c_end'],
-    tt_daily: ['start', 'end'], tt_prev: ['prev_start', 'prev_end'], tt_videos: ['c_start', 'c_end'],
+    tt_daily: ['start', 'end'], tt_prev: ['prev_start', 'prev_end'], tt_videos: ['c_start', 'c_end'], ig_reposts: ['c_start', 'c_end'],
   };
   const files = {}, calcs = {}, subs = [];
   let cache = {}, params = {}, scheduled = false;

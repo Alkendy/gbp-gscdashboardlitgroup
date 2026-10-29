@@ -244,10 +244,23 @@ a.sm-entry-item:hover { border-color: var(--color-fg-muted); }
       </div>
       <div class="sm-ctl">
         <select class="sm-csort" aria-label="Urutkan konten">
-          <option value="views">Views tertinggi</option>
-          <option value="er">ER tertinggi</option>
-          <option value="inter">Interaksi tertinggi</option>
-          <option value="date">Terbaru</option>
+          <optgroup label="Awareness">
+            <option value="views">Views tertinggi</option>
+            <option value="reach">Reach tertinggi</option>
+          </optgroup>
+          <optgroup label="Engagement">
+            <option value="inter">Engagement tertinggi</option>
+            <option value="er">Engagement Rate tertinggi</option>
+            <option value="saves">Saves tertinggi</option>
+            <option value="shares">Shares tertinggi</option>
+          </optgroup>
+          <optgroup label="Conversion">
+            <option value="link">Link Taps tertinggi</option>
+            <option value="follows">New Followers tertinggi</option>
+          </optgroup>
+          <optgroup label="Lainnya">
+            <option value="date">Terbaru</option>
+          </optgroup>
         </select>
         <button type="button" class="sm-btn sm-view" data-view="card">Kartu</button>
         <button type="button" class="sm-btn sm-view" data-view="table">Tabel</button>
@@ -425,6 +438,7 @@ dash.loader('ig_media', windsorLoader);
 dash.loader('tt_daily', windsorLoader);
 dash.loader('tt_prev', windsorLoader);
 dash.loader('tt_videos', windsorLoader);
+dash.loader('ig_reposts', windsorLoader);
 
 dash.calc('ig_sum', {
   inputs: ['ig_daily', 'ig_prev', 'ig_profile'],
@@ -464,7 +478,7 @@ dash.calc('ig_sum', {
       const fgrPrev = start == null ? null : div(p.follower_count, start - p.follower_count);
       return {
         account, views: c.views, views_non_followers: c.views_non_followers, interactions: c.total_interactions,
-        save_share: c.saves + c.shares, new_followers: c.follower_count, link_taps: c.profile_links_taps, followers, ...rc, fgr,
+        saves: c.saves, save_share: c.saves + c.shares, new_followers: c.follower_count, link_taps: c.profile_links_taps, followers, ...rc, fgr,
         views_chg: chg(c.views, p.views), interactions_chg: chg(c.total_interactions, p.total_interactions),
         save_share_chg: chg(c.saves + c.shares, p.saves + p.shares), new_followers_chg: chg(c.follower_count, p.follower_count),
         link_taps_chg: chg(c.profile_links_taps, p.profile_links_taps),
@@ -487,7 +501,7 @@ dash.calc('tt_sum', {
       const v = rows.filter(valid).sort((a, b) => (a.date < b.date ? -1 : 1));
       return {
         video_views: s('video_views'), likes: s('likes'), comments: s('comments'), shares: s('shares'),
-        profile_views: s('profile_views'), new_followers: s('followers_count'),
+        profile_views: s('profile_views'), bio_link_clicks: s('bio_link_clicks'), new_followers: s('followers_count'),
         followers: v.length ? Number(v[v.length - 1].total_followers_count) : null,
         followers_start: v.length ? Number(v[0].total_followers_count) - (Number(v[0].followers_count) || 0) : null,
       };
@@ -517,7 +531,7 @@ dash.calc('tt_sum', {
       const c = cur[account], p = prev[account], rc = rates(c), rp = p ? rates(p) : {};
       return {
         account, video_views: c.video_views, likes: c.likes, comments: c.comments, shares: c.shares,
-        profile_views: c.profile_views, new_followers: c.new_followers, followers: c.followers, ...rc,
+        profile_views: c.profile_views, bio_link_clicks: c.bio_link_clicks, new_followers: c.new_followers, followers: c.followers, ...rc,
         video_views_chg: chg(c.video_views, p && p.video_views), interactions_chg: chg(rc.interactions, rp.interactions),
         profile_views_chg: chg(c.profile_views, p && p.profile_views), new_followers_chg: chg(c.new_followers, p && p.new_followers),
         er_chg: pp(rc.er, rp.er), sr_chg: pp(rc.sr, rp.sr), pvr_chg: pp(rc.pvr, rp.pvr), fcr_chg: pp(rc.fcr, rp.fcr), fgr_chg: pp(rc.fgr, rp.fgr),
@@ -536,11 +550,13 @@ dash.calc('overview', {
     return [
     ...ig_sum.filter(own).map((r) => ({
       key: 'ig|' + r.account, brand: BRAND[r.account] || 'Lainnya', platform: 'Instagram', account: r.account, views: r.views, views_chg: r.views_chg,
-      interactions: r.interactions, er: r.er, er_chg: r.er_chg, new_followers: r.new_followers, followers: r.followers,
+      interactions: r.interactions, er: r.er, er_chg: r.er_chg, saves: r.saves, profile_visits: null, bio_link_taps: null,
+      new_followers: r.new_followers, followers: r.followers,
     })),
     ...tt_sum.filter(own).map((r) => ({
       key: 'tt|' + r.account, brand: BRAND[r.account] || 'Lainnya', platform: 'TikTok', account: r.account, views: r.video_views, views_chg: r.video_views_chg,
-      interactions: r.interactions, er: r.er, er_chg: r.er_chg, new_followers: r.new_followers, followers: r.followers,
+      interactions: r.interactions, er: r.er, er_chg: r.er_chg, saves: null, profile_visits: r.profile_views, bio_link_taps: r.bio_link_clicks,
+      new_followers: r.new_followers, followers: r.followers,
     })),
     ];
   },
@@ -586,7 +602,7 @@ dash.calc('tt_trend', {
 dash.calc('ig_content', {
   inputs: ['ig_media'],
   title: 'Konten Instagram',
-  description: 'Setiap post Instagram di periode terpilih, dengan ER (interaksi ÷ views) dan save+share rate.',
+  description: 'Setiap post Instagram di periode terpilih, dengan ER (interaksi ÷ views), save+share rate, likes, comments dan link taps (aksi profil).',
   fn: (ig_media) => {
     const BRAND = { everlash_lash_expert: 'Ever', 'evernails.byever': 'Ever', 'everbody.byever': 'Ever', 'everspmu.byever': 'Ever', 'EVER IDN': 'Ever', 'ruhee.id': 'Ruhee', RUHEE: 'Ruhee', 'ruhee.diary': 'Ruheediary', laverelash: 'Lavere' };
     return ig_media.map((r) => {
@@ -597,6 +613,9 @@ dash.calc('ig_content', {
       media_engagement: r.media_engagement, er: v ? (Number(r.media_engagement) || 0) / v : null,
       media_saved: r.media_saved, media_shares: r.media_shares,
       ssr: v ? ((Number(r.media_saved) || 0) + (Number(r.media_shares) || 0)) / v : null, media_follows: r.media_follows,
+      likes: Math.max(Number(r.media_total_like_count) || 0, Number(r.media_like_count) || 0),
+      comments: Math.max(Number(r.media_total_comments_count) || 0, Number(r.media_comments_count) || 0),
+      link_taps: r.media_profile_activity == null ? null : Number(r.media_profile_activity),
     };
     });
   },
@@ -616,6 +635,7 @@ dash.calc('tt_content', {
       video_share_url: r.video_share_url, video_views_count: r.video_views_count, video_reach: r.video_reach,
       video_likes: r.video_likes, video_comments: r.video_comments, video_shares: r.video_shares, video_favorites: r.video_favorites,
       interactions: i, er: v ? i / v : null, video_new_followers: r.video_new_followers, video_full_watched_rate: r.video_full_watched_rate,
+      likes: r.video_likes, comments: r.video_comments,
     };
     });
   },
@@ -792,7 +812,8 @@ const setupTable = (table, cols, state) => {
   const tr = document.createElement('tr');
   for (const c of cols) {
     const th = document.createElement('th');
-    if (c.t !== 'link') th.dataset.field = c.f;
+    if (c.t !== 'link') th.dataset.field = c.sf || c.f;
+    if (c.src) th.dataset.source = c.src;
     if (NUMT.includes(c.t)) th.className = 'num';
     if (c.hn) th.classList.add('sm-hn');
     if (c.t === 'link') th.textContent = c.l;
@@ -858,19 +879,20 @@ const OV_COLS = [
   { f: 'brand', l: 'Brand', t: 'text', hn: 1 }, { f: 'platform', l: 'Platform', t: 'text' }, { f: 'account', l: 'Akun', t: 'text' },
   { f: 'views', l: 'Views', t: 'count', i: 'Instagram: total views akun. TikTok: total video views. Dijumlahkan dari data harian pada periode terpilih.' }, { f: 'views_chg', l: 'Δ Views', t: 'chg', hn: 1, i: 'Perubahan views dibandingkan periode sebelumnya dengan durasi sama: (periode ini − periode sebelumnya) ÷ periode sebelumnya.' },
   { f: 'interactions', l: 'Engagement', t: 'count', hn: 1, i: 'Engagement adalah total interaksi. Instagram: likes, comments, saves dan shares. TikTok: likes, comments dan shares. Dijumlahkan dari data harian.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'er_chg', l: 'Δ ER', t: 'pp', i: 'Perubahan engagement rate dibandingkan periode sebelumnya, dalam poin persentase (pp).' },
+  { f: 'saves', l: 'Saves', t: 'count', hn: 1, i: 'Instagram: jumlah konten disimpan (saves) pada periode, dijumlahkan dari data harian akun. TikTok: tidak disediakan di level akun, sehingga ditampilkan —.' }, { f: 'profile_visits', l: 'Profile Visits', t: 'count', hn: 1, i: 'TikTok: jumlah kunjungan ke profil pada periode. Instagram: sudah tidak disediakan Instagram di level akun, sehingga ditampilkan —.' }, { f: 'bio_link_taps', l: 'Bio Link Taps', t: 'count', hn: 1, i: 'TikTok: jumlah klik link di bio pada periode. Instagram: tidak disediakan Instagram di level akun (klik link bio sudah dihentikan Meta), sehingga ditampilkan —.' },
   { f: 'new_followers', l: 'New Followers', t: 'count', i: 'Instagram: akun yang mulai mengikuti. TikTok: follower bersih (baru dikurangi yang berhenti mengikuti). Dijumlahkan dalam periode.' }, { f: 'followers', l: 'Total Followers', t: 'count', hn: 1, i: 'Instagram: jumlah follower saat ini. TikTok: jumlah follower pada hari terakhir yang datanya tersedia.' },
 ];
 const IG_COLS = [
   { f: 'date', l: 'Tanggal Posting', t: 'date' }, { f: 'account_name', l: 'Akun', t: 'text' }, { f: 'media_type', l: 'Format', t: 'text', hn: 1 },
   { f: 'media_caption', l: 'Caption', t: 'cap' }, { f: 'media_views', l: 'Views', t: 'count', i: 'Jumlah tayangan unggahan sejak dipublikasikan.' }, { f: 'media_reach', l: 'Reach', t: 'count', hn: 1, i: 'Jumlah akun unik yang melihat unggahan.' },
-  { f: 'media_engagement', l: 'Engagement', t: 'count', i: 'Likes + comments + saves + shares pada unggahan.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'media_saved', l: 'Saves', t: 'count', hn: 1, i: 'Jumlah akun unik yang menyimpan unggahan.' },
-  { f: 'media_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah unggahan dibagikan.' }, { f: 'ssr', l: 'Save & Share Rate', t: 'rate', hn: 1, i: '(Saves + shares) ÷ views × 100%. Indikator nilai konten bagi audiens.' }, { f: 'media_follows', l: 'Follows', t: 'count', hn: 1, i: 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak tersedia untuk Reels.' },
+  { f: 'media_engagement', l: 'Engagement', t: 'count', i: 'Likes + comments + saves + shares pada unggahan.' }, { f: 'likes', l: 'Likes', t: 'count', hn: 1, i: 'Jumlah likes pada unggahan, sesuai angka di aplikasi Instagram.' }, { f: 'comments', l: 'Comments', t: 'count', hn: 1, i: 'Jumlah komentar pada unggahan, termasuk balasan.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'media_saved', l: 'Saves', t: 'count', hn: 1, i: 'Jumlah akun unik yang menyimpan unggahan.' },
+  { f: 'media_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah unggahan dibagikan.' }, { f: 'reposts', l: 'Reposts', t: 'count', hn: 1, src: 'ig_reposts', sf: 'media_reposts', i: 'Jumlah unggahan di-repost oleh akun lain. Tersedia untuk akun yang terhubung lewat Facebook Login; selain itu ditampilkan —.' }, { f: 'link_taps', l: 'Link Taps', t: 'count', hn: 1, i: 'Aksi di profil setelah melihat unggahan, seperti tap link bio, telepon, dan rute. Tidak disediakan Instagram untuk Reels.' }, { f: 'ssr', l: 'Save & Share Rate', t: 'rate', hn: 1, i: '(Saves + shares) ÷ views × 100%. Indikator nilai konten bagi audiens.' }, { f: 'media_follows', l: 'Follows', t: 'count', hn: 1, i: 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak tersedia untuk Reels.' },
   { f: 'media_permalink', l: 'Link', t: 'link' },
 ];
 const TT_COLS = [
   { f: 'date', l: 'Tanggal Posting', t: 'date' }, { f: 'account_name', l: 'Akun', t: 'text' }, { f: 'video_caption', l: 'Caption', t: 'cap' },
   { f: 'video_views_count', l: 'Views', t: 'count', i: 'Jumlah tayangan video sejak dipublikasikan.' }, { f: 'video_reach', l: 'Reach', t: 'count', hn: 1, i: 'Jumlah penonton unik video. TikTok mengirimkan angka ini 24–48 jam setelah tayangan.' }, { f: 'video_likes', l: 'Likes', t: 'count', hn: 1, i: 'Jumlah likes pada video.' },
-  { f: 'video_comments', l: 'Comments', t: 'count', hn: 1, i: 'Jumlah komentar pada video.' }, { f: 'video_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah video dibagikan.' }, { f: 'video_favorites', l: 'Favorites', t: 'count', hn: 1, i: 'Jumlah video ditambahkan ke favorit (disimpan).' },
+  { f: 'video_comments', l: 'Comments', t: 'count', hn: 1, i: 'Jumlah komentar pada video.' }, { f: 'video_shares', l: 'Shares', t: 'count', hn: 1, i: 'Jumlah video dibagikan.' }, { f: 'video_favorites', l: 'Saves (Favorites)', t: 'count', hn: 1, i: 'Jumlah video ditambahkan ke favorit (disimpan).' },
   { f: 'interactions', l: 'Engagement', t: 'count', i: 'Likes + comments + shares pada video.' }, { f: 'er', l: 'ER', t: 'rate', i: 'Engagement rate = engagement (interaksi) ÷ views × 100%.' }, { f: 'video_new_followers', l: 'New Followers', t: 'count', i: 'Penonton yang mulai mengikuti akun setelah menonton video.' },
   { f: 'video_full_watched_rate', l: 'Full Watch Rate', t: 'rate', hn: 1, i: 'Persentase penonton yang menonton video hingga selesai. Indikator kekuatan hook dan alur video.' }, { f: 'video_share_url', l: 'Link', t: 'link' },
 ];
@@ -920,7 +942,13 @@ ovTable.addEventListener('click', (ev) => {
 });
 root.querySelectorAll('.sm-tab').forEach((b) => b.addEventListener('click', () => { ctab = b.dataset.tab; limit = PAGE; render(); }));
 root.querySelectorAll('.sm-view').forEach((b) => b.addEventListener('click', () => { cview = b.dataset.view; render(); }));
-csortSel.addEventListener('change', () => { csort = csortSel.value; limit = PAGE; render(); });
+csortSel.addEventListener('change', () => {
+  csort = csortSel.value; limit = PAGE;
+  const [a, b] = SORTCOL[csort] || SORTCOL.views;
+  igState.sort = a; igState.dir = 1 * (csort === 'date' ? -1 : -1);
+  ttState.sort = b; ttState.dir = -1;
+  render();
+});
 search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); limit = PAGE; render(); });
 moreBtn.addEventListener('click', () => { limit += PAGE; render(); });
 
@@ -965,8 +993,30 @@ root.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hidePop(); });
 
 /* ---------- content cards ---------- */
-const IG_STATS = [['media_views', 'Views', 'count', 'Jumlah tayangan unggahan sejak dipublikasikan.'], ['media_engagement', 'Engagement', 'count', 'Likes + comments + saves + shares pada unggahan.'], ['er', 'ER', 'rate', 'Engagement rate = engagement (interaksi) ÷ views × 100%.'], ['media_saved', 'Saves', 'count', 'Jumlah akun unik yang menyimpan unggahan.'], ['media_shares', 'Shares', 'count', 'Jumlah unggahan dibagikan.'], ['media_follows', 'Follows', 'count', 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak tersedia untuk Reels.']];
-const TT_STATS = [['video_views_count', 'Views', 'count', 'Jumlah tayangan video sejak dipublikasikan.'], ['interactions', 'Engagement', 'count', 'Likes + comments + shares pada video.'], ['er', 'ER', 'rate', 'Engagement rate = engagement (likes + comments + shares) ÷ views × 100%.'], ['video_favorites', 'Favorites', 'count', 'Jumlah video ditambahkan ke favorit (disimpan).'], ['video_shares', 'Shares', 'count', 'Jumlah video dibagikan.'], ['video_new_followers', 'New Followers', 'count', 'Penonton yang mulai mengikuti akun setelah menonton video.']];
+const IG_STATS = [
+  ['media_views', 'Views', 'count', 'Jumlah tayangan unggahan sejak dipublikasikan.'],
+  ['media_engagement', 'Engagement', 'count', 'Likes + comments + saves + shares pada unggahan.'],
+  ['er', 'ER', 'rate', 'Engagement rate = engagement (interaksi) ÷ views × 100%.'],
+  ['likes', 'Likes', 'count', 'Jumlah likes pada unggahan, sesuai angka di aplikasi Instagram.'],
+  ['comments', 'Comments', 'count', 'Jumlah komentar pada unggahan, termasuk balasan.'],
+  ['media_shares', 'Shares', 'count', 'Jumlah unggahan dibagikan.'],
+  ['media_saved', 'Saves', 'count', 'Jumlah akun unik yang menyimpan unggahan.'],
+  ['reposts', 'Reposts', 'count', 'Jumlah unggahan di-repost oleh akun lain. Tersedia untuk akun yang terhubung lewat Facebook Login; selain itu ditampilkan —.', { src: 'ig_reposts', sf: 'media_reposts' }],
+  ['link_taps', 'Link Taps', 'count', 'Aksi di profil setelah melihat unggahan, seperti tap link bio, telepon, dan rute. Tidak disediakan Instagram untuk Reels.'],
+  ['media_follows', 'Follows', 'count', 'Akun yang mulai mengikuti setelah melihat unggahan. Tidak disediakan Instagram untuk Reels.'],
+];
+const TT_STATS = [
+  ['video_views_count', 'Views', 'count', 'Jumlah tayangan video sejak dipublikasikan.'],
+  ['interactions', 'Engagement', 'count', 'Likes + comments + shares pada video.'],
+  ['er', 'ER', 'rate', 'Engagement rate = engagement (likes + comments + shares) ÷ views × 100%.'],
+  ['likes', 'Likes', 'count', 'Jumlah likes pada video.'],
+  ['comments', 'Comments', 'count', 'Jumlah komentar pada video.'],
+  ['video_shares', 'Shares', 'count', 'Jumlah video dibagikan.'],
+  ['video_favorites', 'Saves', 'count', 'Jumlah video ditambahkan ke favorit (disimpan).'],
+  ['reposts', 'Reposts', 'count', 'Tidak disediakan TikTok per video, sehingga ditampilkan —.', { na: true }],
+  ['link_taps', 'Link Taps', 'count', 'Tidak disediakan TikTok per video, sehingga ditampilkan —. Klik link bio TikTok tersedia di level akun pada Ringkasan Performa Akun.', { na: true }],
+  ['video_new_followers', 'New Followers', 'count', 'Penonton yang mulai mengikuti akun setelah menonton video.'],
+];
 const TYPE = { REELS: 'Reels', CAROUSEL_ALBUM: 'Carousel', IMAGE: 'Foto', VIDEO: 'Video' };
 const postCard = (it) => {
   const r = it.row, ig = it.pf === 'ig';
@@ -982,13 +1032,17 @@ const postCard = (it) => {
   const cap = document.createElement('div'); cap.className = 'sm-post-cap';
   cap.textContent = (ig ? r.media_caption : r.video_caption) || '(tanpa caption)';
   const stats = document.createElement('div'); stats.className = 'sm-post-stats';
-  for (const [f, l, t, info] of ig ? IG_STATS : TT_STATS) {
+  for (const [f, l, t, info, opt = {}] of ig ? IG_STATS : TT_STATS) {
     const box = document.createElement('div');
     const lab = document.createElement('div'); lab.className = 'sm-stat-l'; lab.textContent = l;
     const ib = document.createElement('button'); ib.type = 'button'; ib.className = 'sm-info'; ib.setAttribute('aria-label', 'Cara hitung'); ib.dataset.info = info; ib.textContent = '!'; lab.append(ib);
     const val = document.createElement('div'); val.className = 'sm-stat-v';
-    val.dataset.source = src; val.dataset.field = f; val.dataset.where = where;
-    val.textContent = F[t](r[f]);
+    let v = r[f];
+    if (opt.src) {
+      v = repostMap ? repostMap.get(String(r[key])) : undefined;
+      if (v != null) { val.dataset.source = opt.src; val.dataset.field = opt.sf; val.dataset.where = where; }
+    } else if (!opt.na) { val.dataset.source = src; val.dataset.field = f; val.dataset.where = where; }
+    val.textContent = opt.na ? '—' : F[t](v);
     box.append(lab, val); stats.append(box);
   }
   const foot = document.createElement('div'); foot.className = 'sm-post-link';
@@ -997,12 +1051,14 @@ const postCard = (it) => {
   card.append(top, meta, cap, stats, foot);
   return card;
 };
-const SORTKEY = {
-  views: (it) => (it.pf === 'ig' ? it.row.media_views : it.row.video_views_count),
-  er: (it) => it.row.er,
-  inter: (it) => (it.pf === 'ig' ? it.row.media_engagement : it.row.interactions),
-  date: (it) => it.row.date,
+/* Urutan konten per tahap funnel: [kolom Instagram, kolom TikTok] */
+const SORTCOL = {
+  views: ['media_views', 'video_views_count'], reach: ['media_reach', 'video_reach'],
+  inter: ['media_engagement', 'interactions'], er: ['er', 'er'], saves: ['media_saved', 'video_favorites'], shares: ['media_shares', 'video_shares'],
+  link: ['link_taps', 'link_taps'], follows: ['media_follows', 'video_new_followers'], date: ['date', 'date'],
 };
+const SORTKEY = Object.fromEntries(Object.entries(SORTCOL).map(([k, [a, b]]) => [k, (it) => (it.pf === 'ig' ? it.row[a] : it.row[b])]));
+let repostMap = null;
 
 /* ---------- render ---------- */
 function render() {
@@ -1090,7 +1146,10 @@ function render() {
   const ttPick = (r) => (acc.startsWith('tt:') ? r.account_name === ttAcc : brand === 'all' || r.brand === brand);
   const hit = (r, cap) => !query || String(r[cap] || '').toLowerCase().includes(query) || String(r.account_name || '').toLowerCase().includes(query);
   const ic = dash.data('ig_content'), tc = dash.data('tt_content');
-  const igRows = wantIG && ic.status === 'ok' ? ic.data.filter((r) => igPick(r) && hit(r, 'media_caption')) : [];
+  const rp = dash.data('ig_reposts');
+  repostMap = rp.status === 'ok' ? new Map(rp.data.map((x) => [String(x.media_id), x.media_reposts])) : null;
+  const igRows = wantIG && ic.status === 'ok' ? ic.data.filter((r) => igPick(r) && hit(r, 'media_caption'))
+    .map((r) => ({ ...r, reposts: repostMap ? (repostMap.get(String(r.media_id)) ?? null) : null })) : [];
   const ttRows = wantTT && tc.status === 'ok' ? tc.data.filter((r) => ttPick(r) && hit(r, 'video_caption')) : [];
 
   document.getElementById('konten-kartu').hidden = cview !== 'card';
@@ -1178,8 +1237,11 @@ function buildExport() {
   const trendSheet = (name, src, key) => ({ name, header: ['Tanggal', 'Views', 'Engagement', 'Engagement Rate'], types: ['text', 'int', 'int', 'pct'],
     rows: (dash.data(src).data || []).filter((r) => r.account === key && inRange(r.date)).sort((a, b) => (a.date < b.date ? -1 : 1))
       .map((r) => [r.date, r.views, r.interactions, r.er]) });
+  const rpx = dash.data('ig_reposts');
+  const rmap = rpx.status === 'ok' ? new Map(rpx.data.map((x) => [String(x.media_id), x.media_reposts])) : null;
+  const withReposts = (r) => (r.media_id ? { ...r, reposts: rmap ? (rmap.get(String(r.media_id)) ?? null) : null } : r);
   const contentSheet = (name, src, cols, pick, cap) => ({ name, header: cols.map(headOf).concat('Brand'), types: cols.map((c) => typeOf(c.t)).concat('text'),
-    rows: (dash.data(src).data || []).filter((r) => pick(r) && hit(r, cap)).sort((a, b) => (a.date < b.date ? 1 : -1))
+    rows: (dash.data(src).data || []).filter((r) => pick(r) && hit(r, cap)).map(withReposts).sort((a, b) => (a.date < b.date ? 1 : -1))
       .map((r) => cols.map((c) => cellOf(c.t, r[c.f])).concat(r.brand)) });
   const label = (k) => (k === 'Semua akun' ? 'Semua akun' : k.startsWith('Brand ') ? 'Brand ' + k.slice(6) : k);
   if (showIG) {
