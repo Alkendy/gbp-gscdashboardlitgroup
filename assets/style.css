@@ -187,3 +187,12 @@ html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); fon
 .lit-titlerow .lit-theme { margin-left: auto; }
 .lit-theme-float { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 12px; z-index: 50; }
 @media (max-width: 640px) { .lit-theme-tx { display: none; } .lit-theme { padding: 6px 10px; } .gb-herorow { flex-wrap: wrap; } }
+
+/* ---------- status sync live ---------- */
+.gb-syncrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--cds-gap-sm); margin-top: 4px; }
+.gb-syncrow .gb-credit { margin: 0; }
+#data-updated[data-state="live"]::first-letter { color: var(--color-ok); }
+#data-updated[data-state="backup"]::first-letter { color: var(--color-warn); }
+.gb-syncbtn { font: inherit; font-size: 11px; cursor: pointer; background: var(--color-panel); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 3px 10px; min-height: 26px; }
+.gb-syncbtn:hover { border-color: var(--color-fg-muted); }
+.gb-syncbtn:disabled { opacity: .6; cursor: progress; }

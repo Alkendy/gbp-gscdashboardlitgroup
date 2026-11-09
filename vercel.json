@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/gbp.py": {
+      "maxDuration": 30,
+      "includeFiles": "{scripts/update_data.py,config.json}"
+    }
+  }
+}

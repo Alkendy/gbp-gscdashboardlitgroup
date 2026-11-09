@@ -42,6 +42,36 @@ def month_key(s):
     return f"{m.group(2)}-{MONTHS[m.group(1).lower()]:02d}"
 
 
+def month_only(s):
+    """Judul bulan tanpa tahun (mis. "November ") -> "?-11"; tahunnya ditebak dari blok sebelah."""
+    m = re.match(r"^\s*([A-Za-z]+)\s*$", str(s or ""))
+    if not m or m.group(1).lower() not in MONTHS:
+        return None
+    return f"?-{MONTHS[m.group(1).lower()]:02d}"
+
+
+def fill_years(blocks):
+    """Blok di sheet review urut dari terbaru (kiri) ke terlama (kanan)."""
+    out = list(blocks)
+    for i, (month, weeks) in enumerate(out):
+        if not month.startswith("?-"):
+            continue
+        mm = int(month[2:])
+        older = next((b[0] for b in out[i + 1:] if not b[0].startswith("?-")), None)
+        newer = next((b[0] for b in reversed(out[:i]) if not b[0].startswith("?-")), None)
+        if older:
+            y, om = int(older[:4]), int(older[5:])
+            year = y if mm > om else y + 1
+        elif newer:
+            y, nm = int(newer[:4]), int(newer[5:])
+            year = y if mm < nm else y - 1
+        else:
+            year = dt.date.today().year
+        out[i] = (f"{year}-{mm:02d}", weeks)
+        print(f"Catatan: judul bulan tanpa tahun dibaca sebagai {year}-{mm:02d}", file=sys.stderr)
+    return out
+
+
 def num(v):
     if isinstance(v, bool):
         return None
@@ -106,7 +136,7 @@ def parse_reviews(csv_text):
                 end += 1
             month = None
             for k in range(c, min(end + 1, len(top))):
-                month = month or month_key(top[k])
+                month = month or month_key(top[k]) or month_only(top[k])
             weeks = []
             for k in range(c, end):
                 m = re.match(r"^WEEK (\d) \(([PN])\)$", sub[k].strip(), re.I)
@@ -116,6 +146,7 @@ def parse_reviews(csv_text):
                 blocks.append((month, weeks))
             c = end
         c += 1
+    blocks = fill_years(blocks)
     out = []
     for r in grid[2:]:
         outlet = (r[0] if r else "").strip()
